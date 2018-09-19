@@ -1,0 +1,5 @@
+Q := Rationals();
+Qt<t> := PolynomialRing(Q);
+P2<x,y,z> := ProjectiveSpace(Q,2);
+pols := [t^4+t^3-6*t^2-5*t-1,t^4+3*t^3-3*t+1,t^4-3*t^2+t+1,t^4+t^3-3*t^2+1,t^4+2*t^3-t^2-t,t^4+3*t^3-4*t^2+t,t^4+6*t^3+5*t^2+t,t^4+3*t^3-t^2-4*t+2,t^4+7*t^3+8*t^2-15*t+4,t^4+20*t^3-9*t^2+t];
+curves := [Curve(P2,y^3*z-Numerator(Evaluate(p,x/z))): p in pols];
