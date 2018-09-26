@@ -1,4 +1,4 @@
-For curve 3, we find the three points (0:1:0) (0:1:1) (1:0:1), and
+For curve 3, 47258883:[x^4-3*x^2+x+1], we find the three points (0:1:0) (0:1:1) (1:0:1), and
 3((1:0:1) - (0:1:0)) = 0 in the Jacobian.
 
 When we use 5-adic Chabauty, there is an extra point with x = 2, y^3 = 7.
