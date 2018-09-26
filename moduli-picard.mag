@@ -1,0 +1,128 @@
+AttachSpec("../quartic_reconstruction/package/spec");
+AttachSpec("../quartic_reconstruction/g3twists_v2-0/spec");
+// uses Sijsling et al's Dixmier-Ohno invariant code
+P2<x,y,z> := ProjectiveSpace(Q,2);
+pics := [Curve(P2,y^3*z-x*(x-z)*(x-a*z)*(x-b*z)): a,b in [2..10]|a lt b];
+dois := [DixmierOhnoInvariants(DefiningPolynomial(i)): i in pics];
+assert forall{d: d in dois, i in [1,2,5,6,7,8,11,12]|d[i] eq 0};
+P4w := ProjectiveSpace(Q,[1,1,2,2,3]);
+dpts := [P4w|[d[i]: i in [3,4,9,10,13]]: d in dois];
+
+lss := [LinearSystem(P4w,i): i in [4,5]];
+for i in dpts do lss := [LinearSystem(l,i): l in lss]; end for;
+mod_pic := Scheme(P4w,&cat [Sections(i): i in lss]);
+assert Dimension(mod_pic) eq 2 and IsPrime(Ideal(mod_pic));
+ss := SingularSubscheme(mod_pic);
+assert Degree(ReducedSubscheme(ss)) eq 2;
+spts := [ss|[1/2,1,0,0,0],[1/3,1/9,0,0,1]];
+ls3 := LinearSystem(P4w,3);
+P8 := ProjectiveSpace(Q,8);
+to8 := map<mod_pic->P8|Sections(ls3)>;
+surf8 := Image(to8);
+to8 := map<mod_pic->surf8|Sections(ls3)>;
+spts8 := [to8(i): i in spts];
+ls1 := LinearSystem(P8,1);
+for i in spts8 do ls1 := LinearSystem(ls1,P8!i); end for;
+P6 := ProjectiveSpace(Q,6);
+to6 := map<surf8->P6|Sections(ls1)>;
+surf6 := Image(to6); // check invertibility
+to6 := map<surf8->surf6|Sections(ls1)>;
+assert IsNonsingular(surf6);
+
+P11 := ProductProjectiveSpace(Q,[1,1]);
+to11 := map<surf6->P11|[P6.i: i in [6,7,5,7]]>;
+// check invertibility
+
+// alternatively:
+P2 := ProjectiveSpace(Q,2);
+to2 := map<mod_pic->P2|[P4w.2*P4w.3,P4w.1*P4w.4,P4w.2*P4w.4]>;
+inv_eqs := [b, 1, (6*a^2*b^2 - 21*a^2*b + 9*a^2 - 6*a*b^2 + 21*a*b - 9*a)/(8*a^2 - 84*a + 108), (6*a*b^2 - 21*a*b + 9*a - 6*b^2 + 21*b - 9)/(8*a^2 - 84*a + 108), (1786050*a^2*b^3 + 1454355*a^2*b^2 - 402408*a^2*b - 385641*a^2 + 7042140*a*b^3 - 39615318*a*b^2 - 8713008*a*b + 13380066*a + 6941538*b^3 - 83751165*b^2 + 272255256*b - 116057529)/(81920*a^2 - 245760*a + 184320)] where a is P2.1/P2.3 where b is P2.2/P2.3;
+// to2 := map<mod_pic->P2|[P4w.2*P4w.3,P4w.1*P4w.4,P4w.2*P4w.4],inv_eqs>;
+// should work on a newer version of Magma
+
+// now, to find the curve of things with a hyperflex:
+
+/*
+hf_list := [**];
+for p in PrimesInInterval(100,150) do
+  F := GF(p); P2f<q,r,s> := ProjectiveSpace(F,2);
+  hfs := [];
+  for i,j in F do
+    pij := Curve(P2f,r^3*s-q*(q-s)*(q^2+i*q*s+j*s^2));
+    if IsSingular(pij) or Degree(ReducedSubscheme(Flexes(pij))) eq 23 the\
+n continue; else Append(~hfs,P2f![i,j]); end if;
+  end for;
+  ls10 := LinearSystem(P2f,10);
+  for i in hfs do ls10 := LinearSystem(ls10,i); end for;
+  assert #Sections(ls10) eq 1;
+  Append(~hf_list,<p,ls10.1>);
+  <p,ls10.1>;
+end for;
+
+prod := &*[x[1]: x in hf_list];
+mons := [x: x in MonomialsOfDegree(CoordinateRing(P2),10)|exists{y: y in hf_list|MonomialCoefficient(y[2],Parent(y[2])!x) ne 0}];
+crts := [ChineseRemainderTheorem([Z|MonomialCoefficient(y[2],Parent(y[2])!m): y in hf_list],[y[1]: y in hf_list]): m in mons];
+// it turns out that at worst they are all a/243.
+coefs := [(x*243+10^10) mod prod - 10^10: x in crts];
+hfl_curve := Curve(P2,&+[coefs[i]*mons[i]: i in [1..#mons]]);
+assert IsNonsingular(hfl_curve![-1,1/2,1]); // so lots of points
+assert forall{x: x in hf_list|Parent(x[2])!DefiningPolynomial(hfl_curve) eq 243*x[2]};*/
+
+// curve parametrizing those with an extra hyperflex
+hfl_curve := Curve(P2,243*x^10 + 972*x^9*y + 2430*x^8*y^2 + 3888*x^7*y^3 + 
+    4617*x^6*y^4 + 3888*x^5*y^5 + 2430*x^4*y^6 + 972*x^3*y^7 + 
+    243*x^2*y^8 + 482*x^9*z - 1476*x^8*y*z - 20664*x^7*y^2*z
+    - 66408*x^6*y^3*z - 60822*x^5*y^4*z + 5904*x^4*y^5*z + 
+    27528*x^3*y^6*z + 2196*x^2*y^7*z - 3870*x*y^8*z - 
+    968*y^9*z + 243*x^8*z^2 - 5292*x^7*y*z^2 - 
+    27432*x^6*y^2*z^2 + 59940*x^5*y^3*z^2 + 484839*x^4*y^4*z^2
+    + 569700*x^3*y^5*z^2 + 61560*x^2*y^6*z^2 - 
+    171180*x*y^7*z^2 - 47277*y^8*z^2 - 2916*x^6*y*z^3 + 
+    7776*x^5*y^2*z^3 + 226476*x^4*y^3*z^3 + 430596*x^3*y^4*z^3
+    - 768852*x^2*y^5*z^3 - 1547424*x*y^6*z^3 - 628884*y^7*z^3 + 
+    13122*x^4*y^2*z^4 + 78732*x^3*y^3*z^4 - 308367*x^2*y^4*z^4
+    - 1600884*x*y^5*z^4 - 1036638*y^6*z^4 - 26244*x^2*y^3*z^5 - 
+    223074*x*y^4*z^5 - 498636*y^5*z^5 + 19683*y^4*z^6);
+
+Qt<t> := PolynomialRing(Q);
+pc6s := [PrimaryComponents(Scheme(hfl_curve,x-r*y))[1]: r in [2..50]];       
+nfs := [ext<Q|Evaluate(DefiningPolynomials(p)[1],[0,t,1])>: p in pc6s];   
+P2nfs := [ChangeRing(P2,nfs[i]): i in [1..#nfs]];                            
+picnf := [Curve(p,p.2^3*p.3-p.1*(p.1-p.3)*(p.1^2+(i+1)*nfs[i].1*p.1*p.3+nfs[i].1*p.3^2)) where p is P2nfs[i]: i in [1..49]];
+// verify that these have extra hyperflexes
+// assert forall{x: x in picnf|Degree(ReducedSubscheme(Flexes(x))) lt 23};
+donfs := [*DixmierOhnoInvariants(DefiningPolynomial(i)): i in picnf*];
+p4wflpts := [*P4w(nfs[i])![donfs[i,j]: j in [3,4,9,10,13]]: i in [1..49]*];
+
+// and we can find the curve in P4w, either by interpolating these or
+// by using reduction mod p.
+/*
+lssecs := [**];
+P4wnf := ChangeRing(P4w,nfs[1]);
+lsnf := LinearSystem(P4wnf,5);
+lsnf := LinearSystem(lsnf,P4wnf!Eltseq(p4wflpts[1]));
+ls5 := LinearSystem(P4wnf,5);                                                
+vs := [[MonomialCoefficient(i,m): m in Sections(ls5)]: i in Sections(lsnf)]; 
+Qv := VectorSpace(Q,150);                      
+vsq := [Qv|&cat [Eltseq(i*nfs[1].1^j): i in v]: v in vs, j in [0..5]];
+ratqv := sub<Qv|[Qv.(6*i+1): i in [0..24]]>;
+// or alternatively start reducing mod p
+for p in PrimesInInterval(100,150) do
+  hcp := ChangeRing(hfl_curve,GF(p));
+  P2p<q,r,s> := AmbientSpace(hcp); 
+  csp := [Curve(P2p,r^3*s-q*(q-s)*(q^2+q*s*h[1]+s^2*h[2])): h in RationalPoints(hcp)];
+  dop := [DixmierOhnoInvariants(DefiningPolynomial(i)): i in csp|IsNonsingular(i)];
+  p2inv := [[x[4]*x[9],x[3]*x[10],x[4]*x[10]]: x in dop];   
+  p2inv := {@x: x in p2inv|x ne [0,0,0]@};
+  ls := LinearSystem(P2p,4);
+  for i in p2inv do ls := LinearSystem(ls,P2p!i); end for;
+  Append(~lssecs,Sections(ls)); // and interpolate as above
+  printf "%o ", p;
+end for;
+
+// and indeed we find the equation
+p2c := Curve(P2,x^2*y - 3*x^2*z + 2*x*y*z + 44*x*z^2 + 51*y*z^2 - 228*z^3);
+// and when we pull a point back or apply inv_eqs, we can use
+// TernaryQuarticFromDixmierOhnoInvariants after inserting 0 in the
+// appropriate places.
+*/
