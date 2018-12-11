@@ -1,0 +1,29 @@
+The inputs to compare_primes are:
+
+f, the RHS of the affine equation for the picard curve;
+p_list, a list of primes to run effective chabauty with;
+height, the height to search for points;
+precision, the precision for p-adic arithmetic;
+e, I don't know what this is, I have to look at their code again;
+precision_increment, the ammount to increment precision by when their code fails;
+e_increment, the ammount to increment e by when their code fails.
+
+
+> load "compare.m";                                                       
+Loading "compare.m"
+Loading "coleman.m"
+Loading "auxpolys.m"
+Loading "coho.m"
+Loading "froblift.m"
+Loading "reductions.m"
+Loading "singleintegrals.m"
+Loading "applications.m"
+> curves := eval(Read("chabautyPicard/picard-curves/Rank_1_parsed.txt")); 
+> f := curves[1][2];
+> p_list := [7,11];
+> compare_primes(f, p_list, 1000, 20, 50, 5, 15);                         
+Rational points are [* infty, 0, -2 *]
+7: extras are [* 4609765579368302 + O(7^20), -4609765579368304 + O(7^20) *]
+11: extras are [* 1798450815512247444910370982211 + O(11^30), 
+-1798450815512247444910370982212 + O(11^30) *]
+> 
