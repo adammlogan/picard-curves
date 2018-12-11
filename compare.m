@@ -62,15 +62,14 @@ end function;
 procedure compare_primes(f, prime_list, height, precision, e, precision_increment, e_increment)
     new_precision := precision;
     new_e := e;
-    p_matches := [**];
-    p_extras := [**];
+    extras := AssociativeArray();
     for p in prime_list do
-        matches, extras, new_precision, new_e := compare_errors(f, height, p, new_precision, new_e, precision_increment, e_increment);
-        Append(~p_extras,[*p,extras*]);
+        matches, p_extras, new_precision, new_e := compare_errors(f, height, p, new_precision, new_e, precision_increment, e_increment);
+        extras[p] := p_extras;
     end for;
     printf "Rational points are %o\n", matches;
-    for pair in p_extras do
-        printf "%o: extras are %o\n", pair[1], pair[2];
+    for p in Keys(extras) do
+        printf "%o: extras are %o\n", p, extras[p];
     end for;
 end procedure;
             
