@@ -1,0 +1,35 @@
+################################################################################
+# pathin: directory for input file of curves
+# pathout: directory for output file
+# time: time (in s) before interrupting RankBounds
+# This function reads in a file of genus 3 Picard Curves and for each curve, starts a (time) timer 
+# and uses Magma's RankBounds(f,q) function to output (l,u), a lower,upper bound on the rank 
+# of the Jacobian of the curve y^3=f(x). After time seconds, it interrupts Magma and records
+# that Magma was interrupted. If Magma throws a Runtime Error for f, it catches and records this
+# error. At time of writing, I do not understand why RankBounds throws a Runtime Error for some of 
+# the Picard curves. Uses sage, requires Magma installed. 
+################################################################################
+
+def rank_bounds_with_timeout(pathin,pathout,time):
+    R.<x> = PolynomialRing(RationalField())
+    S = magma(R);
+    with open(pathin) as fin:
+        for line in fin:
+            fout = open(pathout,'a+')
+            alarm(time)
+            disc,f = line.strip().split(':')
+            RHS = sage_eval(f,locals={'x':x})[0]
+            RHS = magma(RHS)
+            try:
+                lowerBound, upperBound = magma.RankBounds(RHS,3,nvals=2)
+                fout.write(disc + ':' + f + ',' + str(lowerBound) + ',' + str(upperBound)+'\n')
+                fout.close()
+            except KeyboardInterrupt:
+                fout.write(disc + ':' + f + ',' + 'RankBounds aborted after' + ' ' + str(time)+'\n')
+                fout.close()
+                continue
+            except RuntimeError:
+                fout.write(disc + ':' + f + ',' + 'RankBounds had a RunTimeError'+ '\n')
+                fout.close()
+                continue
+            cancel_alarm()
