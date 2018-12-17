@@ -176,6 +176,8 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
             Write(fout,Sprint(data)*", Weierstrass point");
         elif torsion_test(f,a,points_height,reln_height) then
             Write(fout,Sprint(data)*", torsion");
+        else
+            Write(fout,Sprint(data)*",unexplained");
         end if;
     end for;
 end procedure;
