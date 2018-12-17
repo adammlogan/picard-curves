@@ -2,9 +2,9 @@ load "coleman.m";
 cc_parameters := AssociativeArray();
 cc_parameters["height"] := 1000;
 cc_parameters["precision"] := 20;
-cc_parameters["precision_inc"] := 3;
+cc_parameters["precision_inc"] := 5;
 cc_parameters["e"] := 50;
-cc_parameters["e_inc"] := 5;
+cc_parameters["e_inc"] := 10;
 
 /*
 Sorts output of effective_chabauty() into known rational 
@@ -73,12 +73,9 @@ function compare_errors(f, p, cc_parameters)
     catch err
         cc_parameters["precision"] := precision + precision_inc;
         cc_parameters["e"] := e + e_inc;
-        compare_data := compare_errors(f, p, cc_parameters);
+        matches, extras := compare_errors(f, p, cc_parameters);
     end try;
-    compare_data := AssociativeArray();
-    compare_data["matches"] := matches;
-    compare_data["extras"] := extras;
-    return compare_data;
+    return matches, extras;
 end function;
 
 
@@ -106,11 +103,11 @@ procedure extra_points(curve, prime_list, cc_parameters, fout)
     Write(fout, "[*");
     for p in prime_list do
         if not (disc mod p eq 0) then 
-            compare_data := compare_errors(f, p, cc_parameters);
-        end if;
-        for a in compare_data["extras"] do
-            Write(fout, Sprint([Integers()!a,p,Precision(a)])*",");
-        end for;
+            p_matches, p_extras := compare_errors(f, p, cc_parameters);
+            for a in p_extras do
+                Write(fout, Sprint([Integers()!a,p,Precision(a)])*",");
+            end for;
+        end if;    
     end for;
     Write(fout, "*]");
 end procedure;            
@@ -169,7 +166,8 @@ outputs of effective_chabauty(), are either:
  - a weierstrass point
  - a torsion point
 */
-procedure test_extras(f,extras_file,points_height,reln_height,fout)
+procedure test_extras(curve,extras_file,points_height,reln_height,fout)
+    f := curve[2];
     extras := eval(Read(extras_file));
     for data in extras do
         Qp := pAdicField(data[2],data[3]);
