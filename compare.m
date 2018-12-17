@@ -1,11 +1,20 @@
 load "coleman.m";
+cc_parameters := AssociativeArray();
+cc_parameters["height"] := 1000;
+cc_parameters["precision"] := 20;
+cc_parameters["precision_inc"] := 3;
+cc_parameters["e"] := 50;
+cc_parameters["e_inc"] := 5;
 
 /*
 Sorts output of effective_chabauty() into known rational 
 points and possibly extra points. 
 */
-function compare(f,height,p,precision,e)
-    data := coleman_data(y^3 - f, p, precision);
+function compare(f, p, cc_parameters)
+    height := cc_parameters["height"];
+    prec := cc_parameters["precision"];
+    e := cc_parameters["e"];
+    data := coleman_data(y^3 - f, p, prec);
     Qpoints := Q_points(data, height);
     L,v := effective_chabauty(data:Qpoints:=Qpoints, e:=e);
     matches := [**];
@@ -31,9 +40,9 @@ function compare(f,height,p,precision,e)
                         end if;
                     end if;
                 else    
-                    minimum_precision := Min(prec1,prec2);
-                    x_Qpoints := ChangePrecision(Qpoints[j]`x, minimum_precision);
-                    x_chabauty := ChangePrecision(L[i]`x,minimum_precision);
+                    min_prec := Min(prec1,prec2);
+                    x_Qpoints := ChangePrecision(Qpoints[j]`x, min_prec);
+                    x_chabauty := ChangePrecision(L[i]`x,min_prec);
                     if x_Qpoints eq x_chabauty then
                         Append(~matches,Integers()!(L[i]`x));
                         matched := true;
@@ -54,42 +63,27 @@ Runs compare() on increasing precision and e until
 effective_chabauty() doesn't throw an assert error.
 */
 
-function compare_errors(f,
-                        height,
-                        p,
-                        precision,
-                        e,
-                        precision_increment,
-                        e_increment)
-    new_precision := precision;
-    new_e := e;
+function compare_errors(f, p, cc_parameters)
+    precision := cc_parameters["precision"];
+    e := cc_parameters["e"];
+    precision_inc := cc_parameters["precision_inc"];
+    e_inc := cc_parameters["e_inc"];
     try 
-        extras, matches := compare(f, height, p, precision, e);
+        matches, extras := compare(f, p, cc_parameters);
     catch err
-        new_precision := precision + precision_increment;
-        new_e := e + e_increment;
-        extras, matches := compare_errors(f, height, p, new_precision, 
-                                          new_e, precision_increment, 
-                                          e_increment);
+        cc_parameters["precision"] := precision + precision_inc;
+        cc_parameters["e"] := e + e_inc;
+        compare_data := compare_errors(f, p, cc_parameters);
     end try;
-    return extras, matches, new_precision, new_e;
+    compare_data := AssociativeArray();
+    compare_data["matches"] := matches;
+    compare_data["extras"] := extras;
+    return compare_data;
 end function;
 
 
 
-procedure compare_primes(f, prime_list, height, precision, e, precision_increment, e_increment)
-    new_precision := precision;
-    new_e := e;
-    extras := AssociativeArray();
-    for p in prime_list do
-        matches, p_extras, new_precision, new_e := compare_errors(f, height, p, new_precision, new_e, precision_increment, e_increment);
-        extras[p] := p_extras;
-    end for;
-    printf "Rational points are %o\n", matches;
-    for p in Keys(extras) do
-        printf "%o: extras are %o\n", p, extras[p];
-    end for;
-end procedure;
+
 
 /*
 Runs Chabauty and finds the extra padic points.
@@ -104,29 +98,17 @@ Runs Chabauty and finds the extra padic points.
 -fout: directory for output file
 */
 
-procedure extra_points(f,
-                        prime_list,
-                        height,
-                        precision,
-                        e,
-                        precision_increment,
-                        e_increment,
-                        fout)
+procedure extra_points(curve, prime_list, cc_parameters, fout)
     //new_precision := precision;
     //new_e := e;
+    disc := Integers()!curve[1];
+    f := curve[2];
     Write(fout, "[*");
     for p in prime_list do
-        new_precision := precision;
-        new_e := e;
-        matches, p_extras, new_precision, new_e := 
-        compare_errors(f,
-                       height,
-                       p,
-                       new_precision,
-                       new_e,
-                       precision_increment,
-                       e_increment);
-        for a in p_extras do
+        if not (disc mod p eq 0) then 
+            compare_data := compare_errors(f, p, cc_parameters);
+        end if;
+        for a in compare_data["extras"] do
             Write(fout, Sprint([Integers()!a,p,Precision(a)])*",");
         end for;
     end for;
@@ -200,4 +182,3 @@ procedure test_extras(f,extras_file,points_height,reln_height,fout)
     end for;
 end procedure;
         
-    
