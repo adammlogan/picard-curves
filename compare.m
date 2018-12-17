@@ -1,5 +1,9 @@
 load "coleman.m";
 
+/*
+Sorts output of effective_chabauty() into known rational 
+points and possibly extra points. 
+*/
 function compare(f,height,p,precision,e)
     data := coleman_data(y^3 - f, p, precision);
     Qpoints := Q_points(data, height);
@@ -45,6 +49,11 @@ function compare(f,height,p,precision,e)
     return matches, extras;
 end function;
 
+/*
+Runs compare() on increasing precision and e until 
+effective_chabauty() doesn't throw an assert error.
+*/
+
 function compare_errors(f,
                         height,
                         p,
@@ -65,6 +74,8 @@ function compare_errors(f,
     end try;
     return extras, matches, new_precision, new_e;
 end function;
+
+
 
 procedure compare_primes(f, prime_list, height, precision, e, precision_increment, e_increment)
     new_precision := precision;
