@@ -21,7 +21,7 @@ function compare(f, p, cc_parameters)
     candidates := [L[i]`x : i in [1..#L]];    
     for xP in point_coords do
         for a in candidates do
-            if xP eq a then
+            if Integers()!xP eq Integers()!a then
                 Remove(~candidates, Index(candidates,a));
             end if;
         end for;
