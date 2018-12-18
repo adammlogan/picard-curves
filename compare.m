@@ -16,46 +16,17 @@ function compare(f, p, cc_parameters)
     e := cc_parameters["e"];
     data := coleman_data(y^3 - f, p, prec);
     Qpoints := Q_points(data, height);
+    point_coords := [Qpoints[i]`x : i in [1..#Qpoints]];
     L,v := effective_chabauty(data:Qpoints:=Qpoints, e:=e);
-    matches := [**];
-    extras := [**];
-    for i in [1..#L] do
-        matched := false;
-        for j in [1..#Qpoints] do
-            if L[i]`inf then
-                if Qpoints[j]`inf then
-                    Append(~matches,"infty");
-                    matched := true;
-                    break;
-                end if;
-            else
-                prec1 := Precision(L[i]`x);
-                prec2 := Precision(Qpoints[j]`x);
-                if prec1 eq 0 or prec2 eq 0 then
-                    if prec1 eq 0 and prec2 eq 0 then
-                        if not Qpoints[j]`inf then
-                            Append(~matches,Integers()!L[i]`x);
-                            matched := true;
-                            break;
-                        end if;
-                    end if;
-                else    
-                    min_prec := Min(prec1,prec2);
-                    x_Qpoints := ChangePrecision(Qpoints[j]`x, min_prec);
-                    x_chabauty := ChangePrecision(L[i]`x,min_prec);
-                    if x_Qpoints eq x_chabauty then
-                        Append(~matches,Integers()!(L[i]`x));
-                        matched := true;
-                        break;
-                    end if;
-                end if;
-            end if;    
+    candidates := [L[i]`x : i in [1..#L]];    
+    for xP in point_coords do
+        for a in candidates do
+            if xP eq a then
+                Remove(~candidates, Index(candidates,a));
+            end if;
         end for;
-        if not matched then
-            Append(~extras,L[i]`x);
-        end if;
     end for;
-    return matches, extras;
+    return point_coords, candidates;
 end function;
 
 /*
@@ -177,7 +148,7 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
         elif torsion_test(f,a,points_height,reln_height) then
             Write(fout,Sprint(data)*", torsion");
         else
-            Write(fout,Sprint(data)*",unexplained");
+            Write(fout,Sprint(data)*", unexplained");
         end if;
     end for;
 end procedure;
