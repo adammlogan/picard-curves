@@ -66,22 +66,22 @@ Runs Chabauty and finds the extra padic points.
 -fout: directory for output file
 */
 
-procedure extra_points(curve, prime_list, cc_parameters, fout)
+function extra_points(curve, prime_list, cc_parameters)
     //new_precision := precision;
     //new_e := e;
     disc := Integers()!curve[1];
     f := curve[2];
-    Write(fout, "[*");
+    extras := [**];
     for p in prime_list do
         if not (disc mod p eq 0) then 
             p_matches, p_extras := compare_errors(f, p, cc_parameters);
             for a in p_extras do
-                Write(fout, Sprint([Integers()!a,p,Precision(a)])*",");
+                Append(~extras,[Integers()!a,p,Precision(a)]);
             end for;
         end if;    
     end for;
-    Write(fout, "*]");
-end procedure;            
+    return extras;
+end function;            
 
 /*
 Returns true if the point is torsion.
@@ -153,3 +153,13 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
     end for;
 end procedure;
         
+procedure batch_extras(ind_start,ind_end,p_list,curves_file,fout)
+    curves := eval(Read(curves_file));
+    for i in [ind_start..ind_end] do
+        curve := curves[i];
+        results := [*curve*];
+        extras := extra_points(curve,p_list,cc_parameters);
+        Append(~results,extras);
+        Write(fout,Sprint(results)*",");
+    end for;
+end procedure;
