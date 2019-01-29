@@ -1,10 +1,8 @@
 load "compare.m";
-curves := eval(Read("Rank_1_parsed.txt"));
-curve := curves[1];
 p_list := [5,7,11,13];
-extra_points(curve, p_list, cc_parameters, "curve1extras.txt");
-/* Delete the last comma in "curve1extras.txt"
-*/
-ht_bound := 100;
-reln_bound := 10;
-test_extras(curve, "curve1extras.txt", ht_bnd, reln_bnd, "curve1tests.txt"); 
+start_index := 1;
+end_index := 2;
+curves := "Rank_1_parsed.txt";
+fout := "batch_test.txt"
+batch_extras(start_index,end_index,p_list,curves,fout);
+
