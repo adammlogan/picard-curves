@@ -5,6 +5,7 @@ cc_parameters["precision"] := 20;
 cc_parameters["precision_inc"] := 5;
 cc_parameters["e"] := 50;
 cc_parameters["e_inc"] := 10;
+cc_parameters["max_prec"] := 40; 
 
 /*
 Sorts output of effective_chabauty() into known rational 
@@ -26,7 +27,7 @@ function compare(f, p, cc_parameters)
             end if;
         end for;
     end for;
-    return point_coords, candidates;
+    return candidates;
 end function;
 
 /*
@@ -40,13 +41,21 @@ function compare_errors(f, p, cc_parameters)
     precision_inc := cc_parameters["precision_inc"];
     e_inc := cc_parameters["e_inc"];
     try 
-        matches, extras := compare(f, p, cc_parameters);
+        extras := compare(f, p, cc_parameters);
+        success := true;
     catch err
-        cc_parameters["precision"] := precision + precision_inc;
-        cc_parameters["e"] := e + e_inc;
-        matches, extras := compare_errors(f, p, cc_parameters);
+        new_prec := precision + precision_inc;
+        new_e := e + e_inc;
+        if new_prec le cc_parameters["max_prec"] then
+            cc_parameters["precision"] := new_prec;
+            cc_parameters["e"] := new_e;
+            success, extras := compare_errors(f, p, cc_parameters);
+        else
+            success := false;
+            extras := [p,new_prec,new_e];
+        end if;
     end try;
-    return matches, extras;
+    return success, extras;
 end function;
 
 
@@ -74,10 +83,15 @@ function extra_points(curve, prime_list, cc_parameters)
     extras := [**];
     for p in prime_list do
         if not (disc mod p eq 0) then 
-            p_matches, p_extras := compare_errors(f, p, cc_parameters);
-            for a in p_extras do
-                Append(~extras,[Integers()!a,p,Precision(a)]);
-            end for;
+            success, results := compare_errors(f, p, cc_parameters);
+            if success then 
+                p_extras := results;
+                for a in p_extras do
+                    Append(~extras,[Integers()!a,p,Precision(a)]);
+                end for;
+            else
+                Append(~extras,results);
+            end if;
         end if;    
     end for;
     return extras;
