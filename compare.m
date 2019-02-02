@@ -109,11 +109,11 @@ Returns true if the point is torsion.
 Let P = (a,a^(1/3),1) be a point on C over K(a^(1/3)). 
 We check if N(P-infty) is torsion for N<reln_height.
 */
-function torsion_test(f,a,points_height,relns_height)
+function torsion_test(f,extras_data,points_height,relns_height)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
     points := PointSearch(C,points_height);
-    a := Rationals()!a;
+    a := Rationals()!extras_data[1];
     K := NumberField(x^3 - Evaluate(f,a));
     C := BaseChange(C,K);
     places := [Place(C![Q[i] : i in [1..3]]) : Q in points];
@@ -131,8 +131,9 @@ end function;
 /* 
 Returns true if a is padic zero of f.
 */
-function ws_test(f,a)
-    Qp := Parent(a);
+function ws_test(f,extras_data)
+    Qp := pAdicField(extras_data[2],extras_data[3]);
+    a := Qp!extras_data[1];
     return Evaluate(f,a) eq Qp!0;
 end function;
 
@@ -155,18 +156,69 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
     f := curve[2];
     extras := eval(Read(extras_file));
     for data in extras do
-        Qp := pAdicField(data[2],data[3]);
-        a := Qp!data[1];
-        if ws_test(f,a) then
+        if ws_test(f,data) then
             Write(fout,Sprint(data)*", Weierstrass point");
-        elif torsion_test(f,a,points_height,reln_height) then
+        elif torsion_test(f,data,points_height,reln_height) then
             Write(fout,Sprint(data)*", torsion");
         else
             Write(fout,Sprint(data)*", unexplained");
         end if;
     end for;
 end procedure;
-        
+       
+function sort_cc_data(p_list,cc_extras_output)
+    data := cc_extras_output;
+    curve := data[1];
+    f := curve[2];
+    disc := Integers()!curve[1];
+    P2 := ProjectiveSpace(Rationals(),2);
+    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
+    points := PointSearch(C,1000);
+    extras := data[2];
+    test_results := [**];
+    points_found := false;
+    for p in p_list do
+        p_results := [*p*];
+        p_extras_ws := [];
+        p_unexplained := [];
+        p_failure := [];
+        if disc mod p ne 0 then
+            for cc_result in extras do
+                if cc_result[2] eq p then
+                    if ws_test(f,cc_result) then
+                        Append(~p_extras_ws,cc_result);
+                    else
+                        Append(~p_unexplained,cc_result);
+                    end if;
+                elif cc_result eq [p,45,100] then
+                    Append(~p_failure,cc_result);
+                end if;
+            end for;
+            if #p_unexplained eq 0 and #p_failure eq 0 then
+                points_found := true;
+            end if;
+            Append(~p_results,p_extras_ws);
+            Append(~p_results,p_unexplained);
+            Append(~p_results,p_failure);
+            Append(~test_results,p_results);
+        end if;    
+    end for;
+    sorted_data := [**];
+    Append(~sorted_data,curve);
+    Append(~sorted_data,points);
+    Append(~sorted_data,points_found);
+    Append(~sorted_data,test_results);
+    return sorted_data;
+end function;
+                
+procedure cc_file_io(extras_file,fout);
+    cc_data := eval(Read(extras_file));
+    for data in cc_data do
+        sorted_data := sort_cc_data([5,7,11,13],data);
+        Write(fout,Sprint(sorted_data)*",");
+    end for;
+end procedure;
+
 procedure batch_extras(ind_start,ind_end,p_list,curves_file,fout)
     curves := eval(Read(curves_file));
     for i in [ind_start..ind_end] do
@@ -176,4 +228,4 @@ procedure batch_extras(ind_start,ind_end,p_list,curves_file,fout)
         Append(~results,extras);
         Write(fout,Sprint(results)*",");
     end for;
-end procedure;
+end procedure;  
