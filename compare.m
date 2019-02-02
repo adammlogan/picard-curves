@@ -134,7 +134,7 @@ Returns true if a is padic zero of f.
 function ws_test(f,extras_data)
     Qp := pAdicField(extras_data[2],extras_data[3]);
     a := Qp!extras_data[1];
-    return Evaluate(f,a) eq Qp!0;
+    return Valuation(Evaluate(f,a)) gt 0;
 end function;
 
 
