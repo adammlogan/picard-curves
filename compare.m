@@ -200,6 +200,7 @@ function sort_cc_data(p_list,cc_extras_output)
                 points_found := true;
             end if;
             Append(~p_results,p_extras_ws);
+            Append(~p_results,p_extras_tor);
             Append(~p_results,p_unexplained);
             Append(~p_results,p_failure);
         end if;
