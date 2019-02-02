@@ -200,8 +200,8 @@ function sort_cc_data(p_list,cc_extras_output)
             Append(~p_results,p_extras_ws);
             Append(~p_results,p_unexplained);
             Append(~p_results,p_failure);
-            Append(~test_results,p_results);
-        end if;    
+        end if;
+        Append(~test_results,p_results);
     end for;
     sorted_data := [**];
     Append(~sorted_data,curve);
