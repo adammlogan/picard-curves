@@ -174,6 +174,7 @@ function sort_cc_data(p_list,cc_extras_output)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
     points := PointSearch(C,1000);
+    points := [Coordinates(P) : P in points];
     extras := data[2];
     test_results := [**];
     points_found := false;
