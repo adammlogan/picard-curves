@@ -190,9 +190,20 @@ procedure parse_data(fin, fout)
             else Torsion := false;
             end if;
         end for;
-    if Failed and Torsion then
+        for c in curve[4] do
+            if #c ge 4 then
+                u:= #c[4];
+                if u ne 0 then
+                    Unexplained := true;
+                    break c;
+                else Unexplained := false;
+                end if;
+            else Unexplained := false;
+            end if;
+        end for;
+    if Failed and Unexplained and Torsion then
         Write(fout,Sprint(curve[1])*"Failed, Torsion");
-    elif Failed then
+    elif Failed and Unexplained then
         Write(fout,Sprint(curve[1])*"Failed");
     elif Torsion then
         Write(fout,Sprint(curve[1])*"Torsion");
