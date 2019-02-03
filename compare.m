@@ -163,6 +163,44 @@ end function;
 */
 
 /*
+Runs tests to see if the data has torsion points or has failed, of so prints to file.
+
+Should be run on files that have already gone through cc_file_io
+*/
+
+procedure parse_data(fin, fout)
+    data := eval(Read(fin));
+    for curve in data do
+        c := curve[1];
+        b := curve[3];
+        pts := curve[4];
+        if b eq false then
+            Failed := true;     
+        else
+            Failed := false;    
+        end if;
+        for c in curve[4] do
+            if #c ge 3 then
+                t:= #c[3];
+                if t ne 0 then
+                    Torsion := true;
+                    break c;
+                else Torsion := false;
+                end if;
+            else Torsion := false;
+            end if;
+        end for;
+    if Failed and Torsion then
+        Write(fout,Sprint(curve[1])*"Failed, Torsion");
+    elif Failed then
+        Write(fout,Sprint(curve[1])*"Failed");
+    elif Torsion then
+        Write(fout,Sprint(curve[1])*"Torsion");
+    end if;
+    end for;
+end procedure;
+
+/*
 Runs tests on points in extras_file.
 
 f is the degree 4 polynomial for the picard curve.
