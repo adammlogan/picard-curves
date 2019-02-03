@@ -182,7 +182,7 @@ false, [* [* 5 *], [* 7,
 *] *]
 *]
 
-In this case, we can see that the x-coordinates of the p-adic points seem to come from a global point, alpha, which is a root of x^3 + 3x^2 +2 = f. Then (alpha, alpha^2+2alpha) is a point on the picard curve y^3 = x^4 + x^3 - 3*x^2 - 2*x over the field Q(alpha). In other words (alpha^2 + 2 alpha)^3 is congruent to x^4 + x^3 - 3*x^2 - 2*x mod f. Note though that Q(alpha) has a prime of degree 1 above 7, 11, 13 but not 17 -- if you try at 17, then there are no extra points!
+In this case, we can see that the x-coordinates of the p-adic points seem to come from a global point, alpha, which is a root of x^3 + 3x^2 +2 = f. Then (alpha, alpha^2+2alpha) is a point on the picard curve y^3 = x^4 + x^3 - 3*x^2 - 2*x over the field Q(alpha). In other words (alpha^2 + 2 alpha)^3 is congruent to x^4 + x^3 - 3*x^2 - 2*x mod f. Note though that Q(alpha) has a prime of degree 1 above 7, 11, 13 but not 17 -- if you try at 17, then there are no extra points! But this does not seem to be torsion, so what is going on?
 
 [*
 [
@@ -220,7 +220,7 @@ false, [* [* 5 *], [* 7,
 *] *]
 *]
 
-These extra unexplained points are roots of x^3+3x+1. Again, we do the same analysis (alpha, -alpha^2-1) is a point on the curve which is defined over the number field Q(alpha). Oddly, these are the same field ... I guess the curves have the same discriminant? What is a good reason for this? (Or are there not so many fields with primes of deg 1 over 5,7,11...)
+These extra unexplained points are roots of x^3+3x+1. Again, we do the same analysis (alpha, -alpha^2-1) is a point on the curve which is defined over the number field Q(alpha). Oddly, these are the same field ... I guess the curves have the same discriminant? What is a good reason for this? (Or are there not so many fields with primes of deg 1 over 5,7,11...) Again, this point does not seem to be torsion.
 
 [*
 [
@@ -311,6 +311,8 @@ false, [* [* 5,
 []
 *] *]
 *]
+
+These seem to be -13/8.
 
 [*
 [
@@ -442,6 +444,8 @@ false, [* [* 5,
 *] *]
 *]
 
+These are 1/3?
+
 [*
 [
 280643678208,
@@ -486,7 +490,7 @@ false, [* [* 5,
 *] *]
 *]
 
-The 7-adic point is 3/8, but that could be the root of unity or another weird problem. Check the other points.
+These are 3/8.
 
 [*
 [
@@ -523,3 +527,5 @@ false, [* [* 5 *], [* 7,
 ]
 *] *]
 *]
+
+And these are 1/5.
