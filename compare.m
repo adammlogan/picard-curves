@@ -104,10 +104,12 @@ Returns true if the point is torsion.
 -a: x-coord output by effective_chabauty() not corresponding 
     to rational point 
 -points_height: bound for PointSearch
--relns_height: bound for torsion
 
-Let P = (a,a^(1/3),1) be a point on C over K(a^(1/3)). 
-We check if N(P-infty) is torsion for N<reln_height.
+Let Pt = (a, a^(1/3)) in Qp. We check if the Coleman integrals
+integral from infinty to Pt on basis differentials are zero
+
+NEED TO FIX: WHAT PRECISION IS IT AFTER INTEGRATING
+
 */
 function torsion_test(f,extras_data)
     p := extras_data[2];
@@ -117,8 +119,7 @@ function torsion_test(f,extras_data)
     infty := set_bad_point(0,[1,0,0],true,data);
     Pt :=set_point(Qp!extras_data[1],Root(Evaluate(f,Qp!extras_data[1]),3),data);
     I := coleman_integrals_on_basis(infty,Pt,data:e:=100);
-    print I;
-    return I eq 0;
+    return Valuation(I[1]) ge Max(N-5,3) and Valuation(I[2]) ge Max(N-5,3) and Valuation(I[3]) ge Max(N-5,3);
 end function;
 
 /* 
@@ -130,6 +131,36 @@ function ws_test(f,extras_data)
     return Valuation(Evaluate(f,a)) gt 0;
 end function;
 
+
+/*
+Let P = (a,a^(1/3),1) be a point on C over K(a,a^(1/3)). 
+Compute N such that N(P-infty) is torsion for N<reln_height.
+minpoly is computed using algebraic dependency in sage, for now
+
+THIS FUNCTION IS ASPIRATIONAL
+*/
+
+/*
+function compute_torsion(f,extras_data,minpoly,points_height,relns_height)
+    P2 := ProjectiveSpace(Rationals(),2);
+    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
+    points := PointSearch(C,points_height);
+    //define a to be a root of minpoly
+    //define K to be the field containing a and the cube root, as below
+    K := NumberField(x^3 - Evaluate(f,a));
+    C := BaseChange(C,K);
+    places := [Place(C![Q[i] : i in [1..3]]) : Q in points];
+    infty := Place(C![0,1,0]);
+    a := K!a;
+    P := Place(C![a,K.1,1]);
+    for N in [1..relns_height] do 
+        if IsPrincipal(N*P - N*infty) then
+            return N;
+        end if;
+    end for;
+    return false;
+end function;
+*/
 
 /*
 Runs tests on points in extras_file.
