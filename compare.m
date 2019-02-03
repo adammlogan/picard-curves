@@ -109,21 +109,16 @@ Returns true if the point is torsion.
 Let P = (a,a^(1/3),1) be a point on C over K(a^(1/3)). 
 We check if N(P-infty) is torsion for N<reln_height.
 */
-function torsion_test(f,extras_data,relns_height)
-    P2 := ProjectiveSpace(Rationals(),2);
-    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
-    a := Rationals()!extras_data[1];
-    K := NumberField(x^3 - Evaluate(f,a));
-    C := BaseChange(C,K);
-    infty := Place(C![0,1,0]);
-    a := K!a;
-    P := Place(C![a,K.1,1]);
-    for N in [1..relns_height] do 
-        if IsPrincipal(N*P - N*infty) then
-            return true;
-        end if;
-    end for;
-    return false;
+function torsion_test(f,extras_data)
+    p := extras_data[2];
+    N := extras_data[3];
+    data:=coleman_data(y^3-f,p,N);
+    Qp := pAdicField(p,N);
+    infty := set_bad_point(0,[1,0,0],true,data);
+    Pt :=set_point(Qp!extras_data[1],Root(Evaluate(f,Qp!extras_data[1]),3),data);
+    I := coleman_integrals_on_basis(infty,Pt,data:e:=100);
+    print I;
+    return I eq 0;
 end function;
 
 /* 
@@ -156,7 +151,7 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
     for data in extras do
         if ws_test(f,data) then
             Write(fout,Sprint(data)*", Weierstrass point");
-        elif torsion_test(f,data,points_height,reln_height) then
+        elif torsion_test(f,data,points_height) then
             Write(fout,Sprint(data)*", torsion");
         else
             Write(fout,Sprint(data)*", unexplained");
@@ -187,7 +182,7 @@ function sort_cc_data(p_list,cc_extras_output)
                 if cc_result[2] eq p then
                     if ws_test(f,cc_result) then
                         Append(~p_extras_ws,cc_result);
-                    elif torsion_test(f,cc_result,10) then
+                    elif torsion_test(f,cc_result) then
                         Append(~p_extras_tor,cc_result);
                     else
                         Append(~p_unexplained,cc_result);
