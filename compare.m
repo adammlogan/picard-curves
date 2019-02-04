@@ -133,6 +133,35 @@ end function;
 
 
 /*
+Returns N if the point is torsion of order N.
+    
+-f: degree 4 polynomial
+-a: x-coord output by effective_chabauty() not corresponding 
+    to rational point but with x-coord rational
+-points_height: bound for PointSearch
+-relns_height: bound for torsion
+
+Let P = (a,a^(1/3),1) be a point on C over K(a^(1/3)). 
+We check if N(P-infty) is torsion for N<reln_height.
+*/
+function rational_torsion_test(f,a,relns_height)
+    P2 := ProjectiveSpace(Rationals(),2);
+    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
+    a := Rationals()!extras_data[1];
+    K := NumberField(x^3 - Evaluate(f,a));
+    C := BaseChange(C,K);
+    infty := Place(C![0,1,0]);
+    a := K!a;
+    P := Place(C![a,K.1,1]);
+    for N in [1..relns_height] do 
+        if IsPrincipal(N*P - N*infty) then
+            return N;
+        end if;
+    end for;
+    return -1;
+end function;
+
+/*
 Let P = (a,a^(1/3),1) be a point on C over K(a).
 It happens that K(a) = K(a, a^(1/3) in the examples we care about. 
 Compute N such that N(P-infty) is torsion for N<reln_height.
