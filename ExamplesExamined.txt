@@ -220,7 +220,7 @@ false, [* [* 5 *], [* 7,
 *] *]
 *]
 
-These extra unexplained points are roots of x^3+3x+1. Again, we do the same analysis (alpha, -alpha^2-1) is a point on the curve which is defined over the number field Q(alpha). Oddly, these are the same field ... I guess the curves have the same discriminant? What is a good reason for this? (Or are there not so many fields with primes of deg 1 over 5,7,11...) Again, this point does not seem to be torsion.
+These extra unexplained points are roots of x^3+3*x+1. Again, we do the same analysis (alpha, -alpha^2-1) is a point on the curve which is defined over the number field Q(alpha). Oddly, these are the same field ... I guess the curves have the same discriminant? What is a good reason for this? (Or are there not so many fields with primes of deg 1 over 5,7,11...) Again, this point does not seem to be torsion.
 
 [*
 [
@@ -265,7 +265,7 @@ false, [* [* 5,
 *] *]
 *]
 
-These seem to be points like x = 1/8 so y= 1/16 which we already found. I guess we could have another cube root of this defined over the p-adics? The 7-adics have a cube root of unity, but 5 and 11 don't... Is there a precision error?
+These seem to be points like x = 1/8 so y= 1/16 which we already found. RESOLVED by hand: there are only as many candidate p-adic points as rational points. Problem: we never checked this basic idea that each rational point has a p-adic point behind it.
 
 [*
 [
@@ -312,7 +312,7 @@ false, [* [* 5,
 *] *]
 *]
 
-These seem to be -13/8.
+These are -13/8.
 
 [*
 [
@@ -354,7 +354,7 @@ false, [* [* 5,
 *] *]
 *]
 
-This looks like 3/8... what is going on?
+This looks like 3/8... again this was not caught by compare, I'm assuming.
 
 [*
 [
