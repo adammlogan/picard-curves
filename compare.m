@@ -133,23 +133,23 @@ end function;
 
 
 /*
-Let P = (a,a^(1/3),1) be a point on C over K(a,a^(1/3)). 
-Compute N such that N(P-infty) is torsion for N<reln_height.
-minpoly is computed using algebraic dependency in sage, for now
+Returns N if the point is torsion of order N.
+    
+-f: degree 4 polynomial
+-a: x-coord output by effective_chabauty() not corresponding 
+    to rational point but with x-coord rational
+-points_height: bound for PointSearch
+-relns_height: bound for torsion
 
-THIS FUNCTION IS ASPIRATIONAL
+Let P = (a,a^(1/3),1) be a point on C over K(a^(1/3)). 
+We check if N(P-infty) is torsion for N<reln_height.
 */
-
-/*
-function compute_torsion(f,extras_data,minpoly,points_height,relns_height)
+function rational_torsion_test(f,a,relns_height)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
-    points := PointSearch(C,points_height);
-    //define a to be a root of minpoly
-    //define K to be the field containing a and the cube root, as below
+    a := Rationals()!extras_data[1];
     K := NumberField(x^3 - Evaluate(f,a));
     C := BaseChange(C,K);
-    places := [Place(C![Q[i] : i in [1..3]]) : Q in points];
     infty := Place(C![0,1,0]);
     a := K!a;
     P := Place(C![a,K.1,1]);
@@ -158,9 +158,86 @@ function compute_torsion(f,extras_data,minpoly,points_height,relns_height)
             return N;
         end if;
     end for;
-    return false;
+    return -1;
 end function;
+
+/*
+Let P = (a,a^(1/3),1) be a point on C over K(a).
+It happens that K(a) = K(a, a^(1/3) in the examples we care about. 
+Compute N such that N(P-infty) is torsion for N<reln_height.
+minpol is computed using algebraic dependency in sage, for now
+
+This prints Support and Decomp for now, but in the future might do more useful things.
 */
+
+
+procedure rational_divisionpt(f,minpol,points_height,relns_height)
+    P2<X,Y,Z> := ProjectiveSpace(Rationals(),2);
+    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
+    points := PointSearch(C,points_height);
+    K<T> := NumberField(minpol);
+    C<x,y,z> := BaseChange(C,K);
+    places := [Place(C![Q[i] : i in [1..3]]) : Q in points];
+    infty := Place(C![0,1,0]);
+    yval:=Root(Evaluate(f,T),3);
+    P := Place(C![T,yval,1]);
+    for N in [1..relns_height] do 
+        print "Support";
+        print Support((N*P - N*infty));
+        print "Decomp";
+        print Decomposition((N*P - N*infty));
+    end for;
+end procedure;
+
+
+/*
+Runs tests to see if the data has torsion points or has failed, of so prints to file.
+
+Should be run on files that have already gone through cc_file_io
+*/
+
+procedure parse_data(fin, fout)
+    data := eval(Read(fin));
+    for curve in data do
+        c := curve[1];
+        b := curve[3];
+        pts := curve[4];
+        if b eq false then
+            Failed := true;     
+        else
+            Failed := false;    
+        end if;
+        for c in curve[4] do
+            if #c ge 3 then
+                t:= #c[3];
+                if t ne 0 then
+                    Torsion := true;
+                    break c;
+                else Torsion := false;
+                end if;
+            else Torsion := false;
+            end if;
+        end for;
+        for c in curve[4] do
+            if #c ge 4 then
+                u:= #c[4];
+                if u ne 0 then
+                    Unexplained := true;
+                    break c;
+                else Unexplained := false;
+                end if;
+            else Unexplained := false;
+            end if;
+        end for;
+    if Failed and Unexplained and Torsion then
+        Write(fout,Sprint(curve[1])*"Failed, Torsion");
+    elif Failed and Unexplained then
+        Write(fout,Sprint(curve[1])*"Failed");
+    elif Torsion then
+        Write(fout,Sprint(curve[1])*"Torsion");
+    end if;
+    end for;
+end procedure;
 
 /*
 Runs tests on points in extras_file.
