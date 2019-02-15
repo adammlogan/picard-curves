@@ -7,8 +7,13 @@ def findRankOne(fin,fout):
 	out.write('[')
 	for c in curves:
 		c=c.strip()
-		if int(c[-1:])==1 and int(c[-3:-2]) ==1:
-			c=c.replace(':',',')
-			out.write("["+c[:-3]+"]"+","+"\n")
+		try:
+			if int(c[-1:])==1 and int(c[-3:-2]) ==1:
+				c=c.replace(':',',')
+				c=c.replace('[','')
+				c=c.replace(']','')
+				out.write("["+c[:-3]+"]"+","+"\n")
+		except:
+			continue
 	out.write(']')
-findRankOne("testcurves.txt","testout.txt")
+findRankOne("weird_rankboundsoutput.txt","rank1fromwrb.txt")
