@@ -147,7 +147,7 @@ We check if N(P-infty) is torsion for N<reln_height.
 function rational_torsion_test(f,a,relns_height)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
-    a := Rationals()!extras_data[1];
+    a := Rationals()!a;
     K := NumberField(x^3 - Evaluate(f,a));
     C := BaseChange(C,K);
     infty := Place(C![0,1,0]);
@@ -160,34 +160,6 @@ function rational_torsion_test(f,a,relns_height)
     end for;
     return -1;
 end function;
-
-/*
-Let P = (a,a^(1/3),1) be a point on C over K(a).
-It happens that K(a) = K(a, a^(1/3) in the examples we care about. 
-Compute N such that N(P-infty) is torsion for N<reln_height.
-minpol is computed using algebraic dependency in sage, for now
-
-This prints Support and Decomp for now, but in the future might do more useful things.
-*/
-
-
-procedure rational_divisionpt(f,minpol,points_height,relns_height)
-    P2<X,Y,Z> := ProjectiveSpace(Rationals(),2);
-    C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
-    points := PointSearch(C,points_height);
-    K<T> := NumberField(minpol);
-    C<x,y,z> := BaseChange(C,K);
-    places := [Place(C![Q[i] : i in [1..3]]) : Q in points];
-    infty := Place(C![0,1,0]);
-    yval:=Root(Evaluate(f,T),3);
-    P := Place(C![T,yval,1]);
-    for N in [1..relns_height] do 
-        print "Support";
-        print Support((N*P - N*infty));
-        print "Decomp";
-        print Decomposition((N*P - N*infty));
-    end for;
-end procedure;
 
 
 /*
