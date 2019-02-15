@@ -325,6 +325,9 @@ procedure cc_file_io(extras_file,fout);
     end for;
 end procedure;
 
+
+
+        
 procedure batch_extras(ind_start,ind_end,p_list,curves_file,fout)
     curves := eval(Read(curves_file));
     for i in [ind_start..ind_end] do
