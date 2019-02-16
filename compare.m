@@ -19,24 +19,28 @@ function compare(f, p, cc_parameters)
     Qpoints := Q_points(data, height);
     point_coords := [Qpoints[i]`x : i in [1..#Qpoints]];
     L,v := effective_chabauty(data:Qpoints:=Qpoints, e:=e);
-    candidates := [L[i]`x : i in [1..#L]];    
-    for xP in point_coords do
-        for a in candidates do
-            N := Min(Precision(xP),Precision(a));
-            if N gt 0 then
-                x_point := ChangePrecision(xP,N);
-                x_cand := ChangePrecision(a,N);
-                if Integers()!x_point eq Integers()!x_cand then
-                    Remove(~candidates, Index(candidates,a));
+    candidates := [L[i]`x : i in [1..#L]];
+    if #point_coords eq #candidates then
+        return [];
+    else
+        for xP in point_coords do
+            for a in candidates do
+                N := Min(Precision(xP),Precision(a));
+                if N gt 0 then
+                    x_point := ChangePrecision(xP,N);
+                    x_cand := ChangePrecision(a,N);
+                    if Integers()!x_point eq Integers()!x_cand then
+                        Remove(~candidates, Index(candidates,a));
+                    end if;
+                else
+                    if Integers()!xP eq Integers()!a then
+                        Remove(~candidates, Index(candidates,a));
+                    end if;
                 end if;
-            else
-                if Integers()!xP eq Integers()!a then
-                    Remove(~candidates, Index(candidates,a));
-                end if;
-            end if;
+            end for;
         end for;
-    end for;
-    return candidates;
+        return candidates;
+     end if;
 end function;
 
 /*
