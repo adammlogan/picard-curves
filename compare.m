@@ -132,7 +132,7 @@ function torsion_test(f,extras_data)
     infty := set_bad_point(0,[1,0,0],true,data);
     Pt :=set_point(Qp!extras_data[1],Root(Evaluate(f,Qp!extras_data[1]),3),data);
     I := coleman_integrals_on_basis(infty,Pt,data:e:=100);
-    return I[1] eq Qp!0 and I[2] eq Qp!0 and I[3] eq Qp!0;
+    return IsZero(I[1]) and IsZero(I[2]) and IsZero(I[3]);
 end function;
 
 /* 
@@ -141,7 +141,7 @@ Returns true if a is padic zero of f.
 function ws_test(f,extras_data)
     Qp := pAdicField(extras_data[2],extras_data[3]);
     a := Qp!extras_data[1];
-    return Valuation(Evaluate(f,a)) gt 0;
+    return IsZero(Evaluate(f,a));
 end function;
 
 
