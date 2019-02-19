@@ -121,7 +121,7 @@ Returns true if the point is torsion.
 Let Pt = (a, a^(1/3)) in Qp. We check if the Coleman integrals
 integral from infinty to Pt on basis differentials are zero
 
-NEED TO FIX: WHAT PRECISION IS IT AFTER INTEGRATING
+Warning: this only works on old versions of magma due to zero being infinite precision on new magma.
 
 */
 function torsion_test(f,extras_data)
@@ -132,7 +132,7 @@ function torsion_test(f,extras_data)
     infty := set_bad_point(0,[1,0,0],true,data);
     Pt :=set_point(Qp!extras_data[1],Root(Evaluate(f,Qp!extras_data[1]),3),data);
     I := coleman_integrals_on_basis(infty,Pt,data:e:=100);
-    return Valuation(I[1]) ge Max(N-5,3) and Valuation(I[2]) ge Max(N-5,3) and Valuation(I[3]) ge Max(N-5,3);
+    return I[1] eq Qp!0 and I[2] eq Qp!0 and I[3] eq Qp!0;
 end function;
 
 /* 
