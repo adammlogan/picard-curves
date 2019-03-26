@@ -5,7 +5,6 @@ def findaborted(fin,fout1,fout2):
 	out1 = open(fout1,"w")
 	out2 = open(fout2,"w")
 	curves = open(fin,"r")
-	out.write('[')
 	for c in curves:
 		c=c.strip()
 		try:
@@ -20,5 +19,4 @@ def findaborted(fin,fout1,fout2):
 				out2.write("["+c[:-3]+"]"+","+"\n")
 		except:
 			continue
-	out.write(']')
 findaborted("RankBounds_data","abortedcurves.txt","allpicardcurves.txt")
