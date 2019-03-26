@@ -14,9 +14,15 @@ def findaborted(fin,fout1,fout2):
 				c=c.replace(']','')
 				out1.write("["+c+"]"+","+"\n")
 			elif c[-5:]=="Error":
-				out2.write("["+c[:-29]+"]"+","+"\n")
+				c=c.replace(':',',')
+				c=c.replace('[','')
+				c=c.replace(']','')
+				out2.write("["+c[:-30]+"]"+","+"\n")
 			else:
-				out2.write("["+c[:-3]+"]"+","+"\n")
+				c=c.replace(':',',')
+				c=c.replace('[','')
+				c=c.replace(']','')
+				out2.write("["+c[:-4]+"]"+","+"\n")
 		except:
 			continue
-findaborted("RankBounds_data","abortedcurves.txt","allpicardcurves.txt")
+findaborted("RankBounds_data","abortedcurves.txt","goodpicardcurves.txt")

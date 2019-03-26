@@ -5,7 +5,7 @@ procedure rankboundsbatch(fin,fout)
 	data := eval(Read(fin));
 	for curve in data do
 		d:= curve[1];
-		f := curve[2][1];
+		f := curve[2];
 		try 
 			l, u := RankBounds(f,3);
 			Write(fout,Sprint(d)*":"*"["*Sprint(f)*"]"*Sprint(l)*","*Sprint(u));

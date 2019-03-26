@@ -5,17 +5,17 @@ procedure rankboundsbatch(fin,fout)
 	data := eval(Read(fin));
 	for curve in data do
 		d:= curve[1];
-		f := curve[2][1];
+		f := curve[2];
 		try 
 			l, u, gens := RankBounds(f,3:ReturnGenerators);
 			fact := Factorization(f);
-			factorlist = [**];
+			factorlist := [**];
 			for factor in fact do
 				Append(~factorlist,factor[1]);
 			end for;
 			for x in fact do
 				if x in gens then
-					Exclude(~S,x);
+					Exclude(~gens,x);
 				end if;
 			end for;
 			sgens:=Set(gens);
