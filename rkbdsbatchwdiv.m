@@ -1,4 +1,4 @@
-/* Runs RankBounds on a file fin of monic curves. Picks out lower bound number of generators. Prints the result to a file fout.  */
+/* Runs RankBounds on a file fin of monic curves of rank 1. Picks out one generator. Prints the result to a file fout.  */
 
 procedure rkboundswdiv(fin,fout)
 	R<x> := PolynomialRing(RationalField());
@@ -9,8 +9,7 @@ procedure rkboundswdiv(fin,fout)
 		try 
 			l, u, gens := RankBounds(f,3:ReturnGenerators);
 			fact := Factorization(f);
-			print fact;
-			factorlist := [];
+			factorlist := [**];
 			for factor in fact do
 				Append(~factorlist,factor[1]);
 			end for;
@@ -22,7 +21,7 @@ procedure rkboundswdiv(fin,fout)
 					Exclude(~gens,elt);
 				end if;
 			end for;
-			glist := gens[1..l];
+			glist := gens[1];
 			Write(fout,Sprint(d)*":"*"["*Sprint(f)*"]"*Sprint(l)*","*Sprint(u)*"," * Sprint(glist));
 		catch e
 			Write(fout,Sprint(d)*":"*"["*Sprint(f)*"]"*e`Object);
