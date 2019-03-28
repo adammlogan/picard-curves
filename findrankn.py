@@ -12,7 +12,7 @@ def findRankOne(fin,fout):
 				c=c.replace(':',',')
 				c=c.replace('[','')
 				c=c.replace(']','')
-				out.write("["+c[:-3]+"]"+","+"\n")
+				out.write("["+c[:-4]+"]"+","+"\n")
 		except:
 			continue
 	out.write(']')
