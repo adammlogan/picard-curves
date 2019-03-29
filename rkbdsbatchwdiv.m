@@ -2,10 +2,12 @@
 
 /*can easily be modified to give all nontorsion gens for higher rank curves, didn't print rank because we know it's rank 1*/
 
-procedure rkboundswdiv(fin,fout)
+procedure rkboundswdiv(fin,fout1,fout2)
 	R<x> := PolynomialRing(RationalField());
 	data := eval(Read(fin));
-	Write(fout,"[*");
+	Write(fout1,"[");
+	Write(fout2,"[");
+
 	for curve in data do
 		d:= curve[1];
 		f := curve[2];
@@ -24,11 +26,14 @@ procedure rkboundswdiv(fin,fout)
 					Exclude(~gens,elt);
 				end if;
 			end for;
-			glist := gens[1];
-			Write(fout,"["*Sprint(d)*","*Sprint(f)*"," * Sprint(glist)* "]"*",");
+			Write(fout1,"["*Sprint(d)*","*Sprint(f)*"," * Sprint(l) *Sprint(u)* Sprint(gens)* "]"*",");
+			if l eq u and l eq 1 then
+				Write(fout2,"["*Sprint(d)*","*Sprint(f)*"," * Sprint(gens[1])* "]"*",");
+			end if;
 		catch e
-			Write(fout,"["*Sprint(d)*","*Sprint(f)*"]"*e`Object);
+			Write(fout1,"["*Sprint(d)*","*Sprint(f)*"]"*e`Object);
 		end try;
 	end for;
-	Write(fout,"*]");
+	Write(fout1,"]");
+	Write(fout2,"]");
 end procedure;

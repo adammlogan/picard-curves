@@ -1,4 +1,4 @@
-#takes in a file of curves on which magma has run RankBounds and finds the aborted curves, prints to files separating aborted from reasonable
+#takes in a file of curves on which magma has run RankBounds and finds the aborted curves, prints to files separating aborted and no valid from reasonable
 
 
 def findaborted(fin,fout1,fout2):
@@ -13,11 +13,16 @@ def findaborted(fin,fout1,fout2):
 				c=c.replace('[','')
 				c=c.replace(']','')
 				out1.write("["+c+"]"+","+"\n")
-			elif c[-5:]=="Error":
+			elif c[-8:]=="elements":
 				c=c.replace(':',',')
 				c=c.replace('[','')
 				c=c.replace(']','')
-				out2.write("["+c[:-30]+"]"+","+"\n")
+				out1.write("["+c+"]"+","+"\n")
+			elif c[-6:]=="image.":
+				c=c.replace(':',',')
+				c=c.replace('[','')
+				c=c.replace(']','')
+				out1.write("["+c+"]"+","+"\n")			
 			else:
 				c=c.replace(':',',')
 				c=c.replace('[','')
@@ -25,4 +30,4 @@ def findaborted(fin,fout1,fout2):
 				out2.write("["+c[:-4]+"]"+","+"\n")
 		except:
 			continue
-findaborted("RankBounds_data","abortedcurves.txt","goodpicardcurves.txt")
+findaborted("master_rankboundsdata.txt","badcurves.txt","goodpicardcurves.txt")
