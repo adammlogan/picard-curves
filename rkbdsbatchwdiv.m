@@ -26,9 +26,9 @@ procedure rkboundswdiv(fin,fout1,fout2)
 					Exclude(~gens,elt);
 				end if;
 			end for;
-			Write(fout1,"["*Sprint(d)*","*Sprint(f)*"," * Sprint(l) *Sprint(u)* Sprint(gens)* "]"*",");
+			Write(fout1,"[*"*Sprint(d)*","*Sprint(f)*"," * Sprint(l) *Sprint(u)* Sprint(gens)* "*]"*",");
 			if l eq u and l eq 1 then
-				Write(fout2,"["*Sprint(d)*","*Sprint(f)*"," * Sprint(gens[1])* "]"*",");
+				Write(fout2,"[*"*Sprint(d)*","*Sprint(f)*"," * Sprint(gens)* "*]"*",");
 			end if;
 		catch e
 			Write(fout1,"["*Sprint(d)*","*Sprint(f)*"]"*e`Object);

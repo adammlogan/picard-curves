@@ -301,6 +301,7 @@
 [264242227968,x^4+2*x^3-5*x^2-2*x,RankBounds aborted after 120],
 [267357003669,7*x^4+9*x^3+4*x^2+x,RankBounds aborted after 120],
 [269460270000,x^4+7*x^3-5*x^2-x,RankBounds aborted after 120],
+[272967308208,x^4+9*x^3+16*x^2-14*x+30, Time out],
 [276115584375,5*x^4+5*x^3+2*x^2+x,RankBounds aborted after 120],
 [276939829683,x^4+10*x^3+x^2+x,RankBounds aborted after 120],
 [276939829683,x^4+2*x^3-5*x^2+5*x-2,RankBounds aborted after 120],
