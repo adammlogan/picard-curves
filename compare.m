@@ -1,4 +1,5 @@
 load "coleman.m";
+load "new_q_points.m";
 cc_parameters := AssociativeArray();
 cc_parameters["height"] := 1000;
 cc_parameters["precision"] := 20;
@@ -181,18 +182,23 @@ Runs tests to see if the data has torsion points or has failed, of so prints to 
 Should be run on files that have already gone through cc_file_io
 */
 
-procedure parse_data(fin, fout)
+procedure parse_data(fin, fout,divisor)
     data := eval(Read(fin));
     for curve in data do
         c := curve[1];
-        b := curve[3];
-        pts := curve[4];
+        if divisor then
+            b:= curve[4];
+            pts:=curve[5];
+        else
+            b := curve[3];
+            pts := curve[4];
+        end if;
         if b eq false then
             Failed := true;     
         else
             Failed := false;    
         end if;
-        for c in curve[4] do
+        for c in pts do
             if #c ge 3 then
                 t:= #c[3];
                 if t ne 0 then
@@ -203,7 +209,7 @@ procedure parse_data(fin, fout)
             else Torsion := false;
             end if;
         end for;
-        for c in curve[4] do
+        for c in pts do
             if #c ge 4 then
                 u:= #c[4];
                 if u ne 0 then
@@ -218,6 +224,8 @@ procedure parse_data(fin, fout)
         Write(fout,Sprint(curve[1])*"Failed, Torsion");
     elif Failed and Unexplained then
         Write(fout,Sprint(curve[1])*"Failed");
+    elif Unexplained then
+        Write(fout,Sprint(curve[1])*"Unexplained");
     elif Torsion then
         Write(fout,Sprint(curve[1])*"Torsion");
     end if;
@@ -252,7 +260,7 @@ procedure test_extras(curve,extras_file,points_height,reln_height,fout)
     end for;
 end procedure;
        
-function sort_cc_data(p_list,cc_extras_output)
+function sort_cc_data(p_list,cc_extras_output,divisor)
     data := cc_extras_output;
     curve := data[1];
     f := curve[2];
@@ -261,7 +269,12 @@ function sort_cc_data(p_list,cc_extras_output)
     C := Curve(P2,Numerator(Evaluate(f,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
     points := PointSearch(C,1000);
     points := [Coordinates(P) : P in points];
-    extras := data[2];
+    if divisor then
+        extras := data[3];
+        g:=data[2];
+    else
+        extras := data[2];
+    end if;
     test_results := [**];
     points_found := false;
     for p in p_list do
@@ -296,6 +309,9 @@ function sort_cc_data(p_list,cc_extras_output)
     end for;
     sorted_data := [**];
     Append(~sorted_data,curve);
+    if divisor then
+        Append(~sorted_data,g);
+    end if;
     Append(~sorted_data,points);
     Append(~sorted_data,points_found);
     Append(~sorted_data,test_results);
@@ -305,13 +321,68 @@ end function;
 procedure cc_file_io(extras_file,fout);
     cc_data := eval(Read(extras_file));
     for data in cc_data do
-        sorted_data := sort_cc_data([5,7,11,13],data);
+        sorted_data := sort_cc_data([5,7,11,13],data,false);
         Write(fout,Sprint(sorted_data)*",");
     end for;
 end procedure;
 
+procedure cc_file_io_div(extras_file,fout);
+    cc_data := eval(Read(extras_file));
+    for data in cc_data do
+        g:= data[2];
+        curve := data[1];
+        if Degree(g) eq 1 then
+            p:=5;
+            disc := curve[1];
+            while disc mod p eq 0 do
+                p:= NextPrime(p);
+            end while;
+        else 
+            p:=first_split_prime(g); 
+        end if;
+        sorted_data := sort_cc_data([p],data,true);
+        Write(fout,Sprint(sorted_data)*",");
+    end for;
+end procedure;
 
-
+procedure batch_extras_div(curves_file,fout)
+    curves := eval(Read(curves_file));
+    for i in [1..#curves] do
+        curvewithdiv := curves[i];
+        curve:=curvewithdiv[1..2];
+        divlist:=curvewithdiv[3];
+        g:=divlist[1];
+        if Degree(g) eq 1 then
+            p:=5;
+            disc := curve[1];
+            while disc mod p eq 0 do
+                p:= NextPrime(p);
+            end while;
+        else 
+            p:=first_split_prime(g); 
+            for d in divlist do
+                if Degree(d) eq 1 then
+                    q:=5;
+                    disc := curve[1];
+                    while disc mod q eq 0 do
+                        q:= NextPrime(p);
+                    end while;
+                else
+                    q:=first_split_prime(d);
+                if q lt p then
+                    p := q;
+                    g :=d;
+                end if;
+            end if;
+            end for;
+        end if;
+        p_list:=[p];
+        results := [*curve,g*];
+        extras := extra_points(curve,p_list,cc_parameters);
+        Append(~results,extras);
+        Write(fout,Sprint(results)*",");
+    end for;
+end procedure; 
         
 procedure batch_extras(ind_start,ind_end,p_list,curves_file,fout)
     curves := eval(Read(curves_file));
