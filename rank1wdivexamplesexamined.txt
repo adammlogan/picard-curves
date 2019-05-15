@@ -270,7 +270,12 @@ true, [* [* 5,
 []
 *] *]
 *]
-X-Coordinte to be a root of x^3 + 12*x^2 + 72*x + 144. Then this is (t, -1/2*t^2 - 4*t - 12).
+X-Coordinte to be a root of x^3 + 12*x^2 + 72*x + 144, let K be its
+splitting field. Then this is
+(t, -1/2*t^2 - 4*t - 12). Set Q = [t,-1/2*t^2-4*t-12,1]. Set
+P=[-4,-4,1] (the nontorsion point on C). We find using reln_search
+that 3*Q+P-4*infty is zero in Jac(C). Thus Q-infty is nontorsion in Jac(C_K) and Q-infty
+is 1/3 of -(P-infty). 
 
 [*
 [
