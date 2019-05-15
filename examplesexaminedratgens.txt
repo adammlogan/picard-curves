@@ -413,6 +413,7 @@ true, [* [* 5,
 *] *]
 *]
 
+Is the 13-adic point just from the 3rd root of unity? Why don't we get one in the 7-adics? (and why wouldn't we normally have this ambiguity)
 
 [*
 [
@@ -454,6 +455,8 @@ true, [* [* 5,
 *] *]
 *]
 
+The 13-adic point appears to be (3/10, sqrt(10)*47/3^2). And 10 is a square mod 13, so this is legit...
+
 [*
 [
 596277116928,
@@ -493,3 +496,5 @@ true, [* [* 5,
 []
 *] *]
 *]
+
+The 13-adic point appears to be (-3/5, sqrt(3*47*61)/25) but it doesn't appear that the square root is defined over the 13-adics... concerning?
