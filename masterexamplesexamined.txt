@@ -392,6 +392,26 @@ true, [* [* 5,
 
 Maybe x-coordinate is a root of x^3 + 9*x^2 + 24*x + 24. Seems to work mod 13. Not sure about what 5 or 11 is doing so maybe not. Increase precision? But not a cube so not right.
 
+For 5 it says x^3 - 24*x - 48 from higher precision:
+
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 468916504224 + O(5^19),
+        b := [ 1 + O(5^30), -8238833750791 + O(5^19), -8254850624319 + O(5^19) 
+        ],
+        inf := false>,
+
+For 11:
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 79131793358 + O(11^11),
+        b := [ 1 + O(11^30), -138631191382 + O(11^11), 109745084189 + O(11^11) 
+        ],
+        inf := false>,
+
+also gives x^3 - 24*x - 48
+
+Is there some way that the difference could be torsion?  What is going on in the 13 case?
+
+
 [*
 [
 940369969152,
@@ -438,50 +458,6 @@ true, [* [* 5,
 
 The x-coordinate is a root of x^3 - 3*x^2 - 8. Finish this analysis.
 
-[*
-[
-113232992256,
-x^4 + x^3 - 4*x^2 - 8*x,
-x - 2
-],
-[
-[ -2, 2, 1 ],
-[ 0, 1, 0 ],
-[ 0, 0, 1 ],
-[ 2, -2, 1 ]
-],
-true, [* [* 5,
-[
-[ 33015057818111, 5, 20 ]
-],
-[],
-[],
-[]
-*], [* 7,
-[
-[ 9498858915388168, 7, 20 ]
-],
-[],
-[],
-[]
-*], [* 11,
-[
-[ 1136567117068787500692829447236705128, 11, 35 ]
-],
-[],
-[],
-[]
-*], [* 13,
-[],
-[],
-[
-[ -2, 13, 22 ]
-],
-[]
-*] *]
-*]
-
-Is the 13-adic point just from the 3rd root of unity? Why don't we get one in the 7-adics? (and why wouldn't we normally have this ambiguity)
 
 [*
 [
@@ -660,3 +636,69 @@ Update: Travis got this to work by hand, and it disappears. Output:
         b := [ 1 + O(13^30), 4 + O(13^16), 16 + O(13^16) ],
         inf := false>
 ]
+
+[*
+[
+113232992256,
+x^4 + x^3 - 4*x^2 - 8*x,
+x - 2
+],
+[
+[ -2, 2, 1 ],
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ 2, -2, 1 ]
+],
+true, [* [* 5,
+[
+[ 33015057818111, 5, 20 ]
+],
+[],
+[],
+[]
+*], [* 7,
+[
+[ 9498858915388168, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[
+[ 1136567117068787500692829447236705128, 11, 35 ]
+],
+[],
+[],
+[]
+*], [* 13,
+[],
+[],
+[
+[ -2, 13, 22 ]
+],
+[]
+*] *]
+*]
+
+Reran at 13, got:
+
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^30), O(13^17) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^17), O(13^30) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 2 + O(13^17),
+        b := [ 1 + O(13^30), -2 + O(13^17), 4 + O(13^17) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -2 + O(13^17),
+        b := [ 1 + O(13^30), 2 + O(13^17), 4 + O(13^17) ],
+        inf := false>
+]
+
+so I think something weird happened with compare, maybe precision error.
