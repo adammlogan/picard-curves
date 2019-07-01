@@ -409,7 +409,42 @@ For 11:
 
 also gives x^3 - 24*x - 48
 
-Is there some way that the difference could be torsion?  What is going on in the 13 case?
+For 5 and 11, we have the point (1/2*t^2 - 4, t) where t is a root of x^3 - 24*x - 48. This number field K(t)/(t^3 - 24*t - 48) has a prime of degree 1 above 5 and 11 but not 13, but yes over 17.
+
+Then at 13, we get the point (t^2 + 6*t + 8, t) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field K(t)/(x^3 + 9*x^2 + 24*x + 24) has a prime of degree one over 13, 17, 19, etc.
+
+Try again at 17:
+
+> p:=17;
+> L,v:=effective_chabauty(data:bound:=1000,e:=100);
+> L;
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^45),
+        b := [ 1 + O(13^45), O(13^45), O(13^27) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^26),
+        b := [ 1 + O(13^45), -4 + O(13^26), 16 + O(13^26) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -2 + O(13^45),
+        b := [ 1 + O(13^45), O(13^27), O(13^45) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -4 + O(13^45),
+        b := [ 1 + O(13^45), O(13^27), O(13^45) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -378088045726077868828625453119 + O(13^27),
+        b := [ 1 + O(13^45), 202754981678978854952180510583 + O(13^27), 86216671010462034805543213047 + O(13^27) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -3 + O(13^27),
+        b := [ 1 + O(13^45), -1 + O(13^27), 1 + O(13^27) ],
+        inf := false>
+]
+> 
 
 
 [*
