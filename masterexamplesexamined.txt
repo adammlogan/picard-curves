@@ -445,7 +445,7 @@ Using division test we get
 Place at (a : 1/2*(a^2 - 8) : 1)
 Place at (-3 : -1 : 1)
 
-(shouldn't this have given me [-6,3]?)
+(shouldn't this have given me [-6,1]?)
 
 and that
 
