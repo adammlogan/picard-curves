@@ -409,7 +409,13 @@ For 11:
 
 also gives x^3 - 24*x - 48
 
-Is there some way that the difference could be torsion?  What is going on in the 13 case?
+For 5 and 11, we have the point (1/2*t^2 - 4, t) where t is a root of x^3 - 24*x - 48. This number field K(t)/(t^3 - 24*t - 48) has a prime of degree 1 above 5 and 11 but not 13, but yes over 17.
+
+Then at 13, we get the point (t^2 + 6*t + 8, t) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field K(t)/(x^3 + 9*x^2 + 24*x + 24) has a prime of degree one over 13, 17, 19, etc.
+
+Try again at 17:
+
+
 
 
 [*
