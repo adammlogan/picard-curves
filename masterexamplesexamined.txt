@@ -264,7 +264,7 @@ some reason this is being flagged as a torsion point (low precision?)
 but it's not. It's actually a third? of a rational point.
 
 We find the following relation in Jac(C):
-10*(2:2:1) + (-1:-1:1) - 11*(0:1:0) = 6*(a:a^2+2*a:1)-6*(0:1:0).
+(-1:-1:1) - (0:1:0) = 3*(a:a^2+2*a:1)-3*(0:1:0).
 
 [*
 [
