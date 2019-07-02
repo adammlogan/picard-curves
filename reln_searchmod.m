@@ -27,6 +27,8 @@ reln_search(F,R,K,100,5);
     
     
 */
+/*
+
 function reln_search(F,R,L,height,search_bnd)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(F,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
@@ -66,6 +68,44 @@ function reln_search(F,R,L,height,search_bnd)
                 break;
             end if;
         end if;
+    end for;
+    return relns;
+end function;
+*/
+
+
+function reln_search(F,R,L,height,search_bnd)
+    P2 := ProjectiveSpace(Rationals(),2);
+    C := Curve(P2,Numerator(Evaluate(F,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
+    I := [-search_bnd..search_bnd];
+    points := PointSearch(C,height);
+    fin_pts := Remove(points,Index(points,C![0,1,0]));
+    C := BaseChange(C,L);
+    R := Place(C!R);
+    fin_pts := [C![P[i] : i in [1..3]] : P in fin_pts];
+    infty := Place(C![0,1,0]);
+    fin_pts := [Place(P) : P in fin_pts];
+    non_tor := [];
+    for P in fin_pts do                 
+        if IsPrincipal(3*(P-infty)) then
+            continue;
+        else
+            Append(~non_tor,P);
+        end if;
+    end for;
+    comps := [I : i in [1..#non_tor]];
+    Append(~comps,[1..search_bnd]);
+    box := CartesianProduct(comps);
+    relns := [];
+    for P in non_tor do
+        for i in I do
+            for j in [1..search_bnd] do
+                D := i*P + j*R - (i+j)*infty;
+                if IsPrincipal(D) then
+                    return [i,j],P,R;
+                end if;
+            end for;
+        end for;
     end for;
     return relns;
 end function;
