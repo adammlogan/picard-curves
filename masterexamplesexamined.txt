@@ -264,7 +264,7 @@ some reason this is being flagged as a torsion point (low precision?)
 but it's not. It's actually a third? of a rational point.
 
 We find the following relation in Jac(C):
-(-1:-1:1) - (0:1:0) = 3*(a:a^2+2*a:1)-3*(0:1:0).
+(-1:-1:1) - (0:1:0) = 3*(a:a^2+2*a:1)-3*(0:1:0). (This shows it's a third of the MW-generator)
 
 [*
 [
@@ -312,7 +312,8 @@ deg 1 over 5,7,11...) Again, this point is not torsion. We had
 computed that it's a third? of a rational point.
 
 We find that
-3*(a:-a^2-1:1) - 3*(0:1:0) = -(0:-1:1)+(0:1:0)
+3*(a:-a^2-1:1) - 3*(0:1:0) = -(0:-1:1)+(0:1:0) 
+This shows it's a third of the MW generator)
 
 [*
 [
@@ -360,10 +361,8 @@ splitting field. Then this is
 (t, -1/2*t^2 - 4*t - 12). Set Q = [t,-1/2*t^2-4*t-12,1]. Set
 P=[-4,-4,1] (the nontorsion point on C). We find using reln_search
 that 3*Q+P-4*infty is zero in Jac(C). Thus Q-infty is nontorsion in Jac(C_K) and Q-infty
-is 1/3 of -(P-infty). 
+is 1/3 of -(P-infty). (Note that P or -P is the MW generator, so this is 1/3 of that generator.)
 
-
-UNKNOWN POINTS
 
 [*
 [
@@ -433,9 +432,11 @@ For 5 and 11, we have the point (t,1/2*t^2 - 4) where t is a root of x^3 - 24*x 
 
 Then at 13, we get the point (t,t^2 + 6*t + 8) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field K(t)/(x^3 + 9*x^2 + 24*x + 24) has a prime of degree one over 13, 17, 19, etc.
 
-Using reln_search we get that (0:-4:1) + 3 (a : 1/2*(a^2 - 8) : 1) =0 and also (-3 : -1 : 1)+3*(a : a^2 + 6*a + 8 : 1)=0.
+Using reln_search we get that  3 (a : 1/2*(a^2 - 8) : 1) - 3(0:1:0)= -(0:-4:1) + (0:1:0) and also -(-3 : -1 : 1)-(0:1:0)=3*(a : a^2 + 6*a + 8 : 1)-3(0:1:0).
 
 
+
+PRECISION ISSUES
 
 [*
 [
@@ -524,10 +525,7 @@ true, [* [* 5,
 *] *]
 *]
 
-The 13-adic point appears to be (3/10, sqrt(10)*47/3^2). And 10 is a square mod 13, so this is legit... Need to decide if this is 1/N of a rational point (since it is apparently not a torsion point.)
-
-
-PRECISION ISSUES
+Redid the point and it appears to be (-1, 1). Will try to make sure it's a precision error later.
 
 [*
 [
