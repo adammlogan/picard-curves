@@ -445,7 +445,7 @@ Using division test we get
 Place at (a : 1/2*(a^2 - 8) : 1)
 Place at (-3 : -1 : 1)
 
-(shouldn't this have given me [-6,1]?)
+(shouldn't this have given me [-6,1]?) no, there is probably a 3-torsion point
 
 and that
 
@@ -457,7 +457,7 @@ Place at (b : b^2 + 6*b + 8 : 1)
 Place at (-3 : -1 : 1)
 > 
 
-therefore that 2((a : 1/2*(a^2 - 8) : 1) - (0:1:0))=(b : b^2 + 6*b + 8 : 1) - (0:1:0) in J(Q) and also that 6((a : 1/2*(a^2 - 8) : 1) - (0:1:0)) = (-3 : -1 : 1)-(0:1:0) and thus 12 times the other point.
+therefore that 18((a : 1/2*(a^2 - 8) : 1) - (0:1:0))=9((b : b^2 + 6*b + 8 : 1) - (0:1:0)) in J(Q) so that (b : b^2 + 6*b + 8 : 1) - (0:1:0) is half of the other point plus possibly a 9-torsion point, and also that 6((a : 1/2*(a^2 - 8) : 1) - (0:1:0)) = (-3 : -1 : 1)-(0:1:0) + three torsion.
 
 At 17 we get four extra points, the two we expect and the Weierstrass points from 7:
 
