@@ -430,7 +430,7 @@ also gives x^3 - 24*x - 48
 
 For 5 and 11, we have the point (t,1/2*t^2 - 4) where t is a root of x^3 - 24*x - 48. This number field K(t)/(t^3 - 24*t - 48) has a prime of degree 1 above 5 and 11 but not 13, but yes over 17.
 
-Then at 13, we get the point (t,t^2 + 6*t + 8) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field K(t)/(x^3 + 9*x^2 + 24*x + 24) has a prime of degree one over 13, 17, 19, etc.
+Then at 13, we get the point (s,s^2 + 6*s + 8) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field Q(t)/(s^3 + 9*s^2 + 24*s + 24) has a prime of degree one over 13, 17, 19, etc.
 
 Using reln_search we get that  3 (a : 1/2*(a^2 - 8) : 1) - 3(0:1:0)= -(0:-4:1) + (0:1:0) and also -(-3 : -1 : 1)-(0:1:0)=3*(a : a^2 + 6*a + 8 : 1)-3(0:1:0).
 
@@ -458,6 +458,16 @@ Place at (-3 : -1 : 1)
 > 
 
 therefore that 2((a : 1/2*(a^2 - 8) : 1) - (0:1:0))=(b : b^2 + 6*b + 8 : 1) - (0:1:0) in J(Q) and also that 6((a : 1/2*(a^2 - 8) : 1) - (0:1:0)) = (-3 : -1 : 1)-(0:1:0) and thus 12 times the other point.
+
+At 17 we get four extra points, the two we expect and the Weierstrass points from 7:
+
+x := 3927705130906318304776768260172977625637045117265524109138 + O(17^48) is a root of x^3 + 9*x^2 + 24*x + 24 and we get that (s,s^2 + 6*s + 8) is a point on the curve. This is the same as the point at 13.
+
+x := 13794699588760165230433715908425239024055848176853380310376 + O(17^48) is a root of x^3 - 24*x - 48 and we get that (t,1/2*t^2 - 4) is a point on the curve. This is the same as the point at 5 and 11.
+
+x := 103871804253268272677148537828849240576404128063697744196442297312689620136215081152215040418792283 is just sqrt(8) = 2 sqrt(2), and then we get (2 sqrt 2, 0) is a point. This is one of the Weierstrass points from 7.
+
+x := -103871804253268272677148537828849240576404128063697744196442297312689620136215081152215040418792283 + O(17^80) is just - sqrt(8) and then we get (-2 sqrt 2, 0) is a point, arbitrarily picking the other sign. This is the other Weierstrass point from 7.
 
 PRECISION ISSUES
 
