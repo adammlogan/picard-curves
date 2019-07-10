@@ -1,4 +1,10 @@
-
+/*
+reln_search: finds relation between point R
+             defined over L, and non-3-torsion
+             points defined over Q
+division_search: tests whether R is 1/N of a point
+division_test: tests whether R is 1/N of MWgen
+*/
 
 
 
@@ -27,7 +33,7 @@ reln_search(F,R,K,100,5);
     
     
 */
-/*
+
 
 function reln_search(F,R,L,height,search_bnd)
     P2 := ProjectiveSpace(Rationals(),2);
@@ -71,10 +77,10 @@ function reln_search(F,R,L,height,search_bnd)
     end for;
     return relns;
 end function;
-*/
 
 
-function reln_search(F,R,L,height,search_bnd)
+
+function division_search(F,R,L,height,search_bnd)
     P2 := ProjectiveSpace(Rationals(),2);
     C := Curve(P2,Numerator(Evaluate(F,P2.1/P2.3)*P2.3^4-P2.3*P2.2^3));
     points := PointSearch(C,height);
