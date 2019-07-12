@@ -880,3 +880,168 @@ effective_chabauty_with_Qdiv:=function(data:Qpoints:=[],bound:=0,e:=1);
 end function;
 
 
+/** Computes integrals from infinity to each point in Qpoints and ...
+    Lpoints 
+**/
+    
+
+compute_integrals := function(data,rat_points,L,Lpoints,e)
+  Q:=data`Q; p:=data`p; N:=data`N; r:=data`r; W0:=data`W0; Winf:=data`Winf;
+  d:=Degree(Q);
+
+  Qp := pAdicField(p,N);
+  
+  xvalues:=[];
+  for i:=1 to #rat_points do
+    if not rat_points[i][1] in xvalues then
+      xvalues:=Append(xvalues,rat_points[i][1]);
+    end if;
+  end for;
+
+  Qx:=RationalFunctionField(RationalField());
+  Qxy:=PolynomialRing(Qx);
+  Qfun:=Qxy!0;
+  C:=Coefficients(Q);
+  for i:=1 to #C do
+    D:=Coefficients(C[i]);
+    for j:=1 to #D do
+      Qfun:=Qfun+D[j]*(Qx.1)^(j-1)*(Qxy.1)^(i-1);
+    end for;
+  end for;
+  FF:=FunctionField(Qfun);
+
+  b0fun:=[];
+  for i:=1 to d do
+    bi:=FF!0;
+    for j:=1 to d do
+      bi:=bi+W0[i,j]*FF.1^(j-1);
+    end for;
+    b0fun[i]:=bi;
+  end for;
+
+  binffun:=[];
+  for i:=1 to d do
+    bi:=FF!0;
+    for j:=1 to d do
+      bi:=bi+Winf[i,j]*FF.1^(j-1);
+    end for;
+    binffun[i]:=bi;
+  end for;
+  
+  pointlist := [];
+  /* make point at infinity, assuming there's only 1 */
+  x:=0;
+  b:=[];
+  places:=InfinitePlaces(FF);
+  for j:=1 to d do
+      b[j]:=Evaluate(binffun[j],places[1]);
+  end for;
+  infty:=set_bad_point(x,b,true,data);
+  pointlist := Append(pointlist,infty);
+  
+
+  for i:=1 to #xvalues do
+    places:=Decomposition(FF,Zeros(Qx.1-xvalues[i])[1]);
+    if Valuation(xvalues[i],p) ge 0 then
+      for j:=1 to #places do
+        if Degree(places[j]) eq 1 then
+          x:=xvalues[i];
+          b:=[];
+          for k:=1 to d do
+            b[k]:=Evaluate(b0fun[k],places[j]);
+          end for;
+          P:=set_bad_point(x,b,false,data);
+          pointlist:=Append(pointlist,P);
+        end if;
+      end for;
+    else
+      for j:=1 to #places do
+        if Degree(places[j]) eq 1 then
+          x:=1/xvalues[i];
+          b:=[];
+          for k:=1 to d do
+            b[k]:=Evaluate(binffun[k],places[j]);
+          end for;
+          P:=set_bad_point(x,b,true,data);
+          pointlist:=Append(pointlist,P);
+        end if;
+      end for;
+    end if;
+  end for; 
+
+
+
+
+  OL := MaximalOrder(L);
+  p_splitting := Factorization(p*OL);
+  prime_over_p := p_splitting[1][1];
+  Qx := RationalFunctionField(L);
+  Qxy:=PolynomialRing(Qx);
+  Qfun:=Qxy!0;
+  C:=Coefficients(Q);
+  for i:=1 to #C do
+    D:=Coefficients(C[i]);
+    for j:=1 to #D do
+      Qfun:=Qfun+D[j]*(Qx.1)^(j-1)*(Qxy.1)^(i-1);
+    end for;
+  end for;
+  FF:=FunctionField(Qfun);
+  W0 := mat_W0_basechange(Q,L);
+  b0fun:=[];
+  for i:=1 to d do
+    bi:=FF!0;
+    for j:=1 to d do
+      bi:=bi+FF!W0[i,j]*FF.1^(j-1);
+    end for;
+    b0fun[i]:=bi;
+  end for;
+
+
+  Lp, embed := Completion(L,prime_over_p:Precision:=N);
+  for P in Lpoints do
+    x := P[1];
+    places:=Decomposition(FF,Zeros(Qx.1-x)[1]);
+    if Valuation(x,prime_over_p) ge 0 then
+      for j:=1 to #places do
+        if Degree(places[j]) eq 1 then
+          b:=[];
+          for k:=1 to d do
+            b[k]:=Evaluate(b0fun[k],places[j]);
+          end for;
+          x := Qp!Trace(embed(x));
+          b := [Qp!Trace(embed(b[j])) : j in [1..d]];
+          Append(~pointlist,set_bad_point(x,b,false,data));
+        end if;
+      end for;
+    end if;
+  end for;
+      
+  for i:=1 to #pointlist do
+    _,index:=local_data(pointlist[i],data);
+    data:=update_minpolys(data,pointlist[i]`inf,index);
+    if is_bad(pointlist[i],data) then
+        if is_very_bad(pointlist[i],data) then
+            xt,bt,index:=local_coord(pointlist[i],tadicprec(data,e),data);
+            pointlist[i]`xt:=xt;
+            pointlist[i]`bt:=bt;
+            pointlist[i]`index:=index; 
+        end if;
+    else
+        xt,bt,index:=local_coord(pointlist[i],tadicprec(data,1),data);
+        pointlist[i]`xt:=xt;
+        pointlist[i]`bt:=bt;
+        pointlist[i]`index:=index; 
+    end if;
+  end for;
+  
+      
+  IP1Pi := [];
+  NIP1Pi := [];
+  for i:=1 to #pointlist-1 do
+      Ci,Ni:=coleman_integrals_on_basis(pointlist[1],pointlist[i+1],data:e:=e);
+      IP1Pi[i]:=Ci;
+      NIP1Pi[i]:=Ni;
+  end for;
+  return IP1Pi;
+  
+end function;
