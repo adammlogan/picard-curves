@@ -211,6 +211,69 @@ true, [* [* 5,
 The point (1:2^(1/3):1) - (0:1:0) is a 4-torsion point on the curve. (Why four?)
 
 
+[*
+[
+829366824600,
+x^4 + 17*x^3 + 36*x^2 + 28*x + 8,
+x
+],
+[
+[ 0, 1, 0 ],
+[ -1, 0, 1 ],
+[ 0, 2, 1 ]
+],
+true, [* [* 5 *], [* 7,
+[],
+[],
+[],
+[]
+*], [* 11,
+[],
+[],
+[],
+[]
+*], [* 13,
+[
+[ -198656, 13, 6 ]
+],
+[
+[ 27, 13, 2 ]
+],
+[],
+[]
+*] *]
+*]
+
+Sage gives (1, (90)^(1/3):1) but Magma does not think this is a torsion point -- maybe a precision error? The Coleman integrals on basis are O(1). (sachi later note: what does that mean? when did i compute those?)
+
+> f:=x^4 + 17*x^3 + 36*x^2 + 28*x + 8;
+> data:=coleman_data(y^3-f,p,N);                  
+> L,v:=effective_chabauty(data:bound:=1000,e:=50);
+> L;
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^18),
+        b := [ 1 + O(13^40), O(13^12), O(13^6) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^7),
+        b := [ 1 + O(13^40), 2 + O(13^7), 4 + O(13^7) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -1 + O(13^21),
+        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -12696623025179167878937 + O(13^21),
+        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
+        inf := false>
+]
+> 
+
+Sage now thinks it's a root of x^3 + 16*x^2 + 20*x + 8 so that it is (a,0). 13 is the first prime to split in this so that at least makes sense.
+
+This is a 3 torsion point.
+
 1/N of RATIONAL POINT
 
 [*
@@ -524,69 +587,6 @@ Now we just need to confirm that this is 1/N of rational point. What if it isn't
 
 NEXT STEP: need to determine if 1/N or endo or what this is. Is not torsion apparently given the classification in compare but would be nice to compute coleman integrals to higher precision just to be sure.
 
-
-[*
-[
-829366824600,
-x^4 + 17*x^3 + 36*x^2 + 28*x + 8,
-x
-],
-[
-[ 0, 1, 0 ],
-[ -1, 0, 1 ],
-[ 0, 2, 1 ]
-],
-true, [* [* 5 *], [* 7,
-[],
-[],
-[],
-[]
-*], [* 11,
-[],
-[],
-[],
-[]
-*], [* 13,
-[
-[ -198656, 13, 6 ]
-],
-[
-[ 27, 13, 2 ]
-],
-[],
-[]
-*] *]
-*]
-
-Sage gives (1, (90)^(1/3):1) but Magma does not think this is a torsion point -- maybe a precision error? The Coleman integrals on basis are O(1). (sachi later note: what does that mean? when did i compute those?)
-
-> f:=x^4 + 17*x^3 + 36*x^2 + 28*x + 8;
-> data:=coleman_data(y^3-f,p,N);                  
-> L,v:=effective_chabauty(data:bound:=1000,e:=50);
-> L;
-[
-    rec<recformat<x, b, inf, xt, bt, index> | 
-        x := O(13^18),
-        b := [ 1 + O(13^40), O(13^12), O(13^6) ],
-        inf := true>,
-    rec<recformat<x, b, inf, xt, bt, index> | 
-        x := O(13^7),
-        b := [ 1 + O(13^40), 2 + O(13^7), 4 + O(13^7) ],
-        inf := false>,
-    rec<recformat<x, b, inf, xt, bt, index> | 
-        x := -1 + O(13^21),
-        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
-        inf := false>,
-    rec<recformat<x, b, inf, xt, bt, index> | 
-        x := -12696623025179167878937 + O(13^21),
-        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
-        inf := false>
-]
-> 
-
-Sage now thinks it's a root of x^3 + 16*x^2 + 20*x + 8 so that it is (a,0). 13 is the first prime to split in this so that at least makes sense.
-
-This is a 3 torsion point.
 
 
 PRECISION ISSUES (all resolved)
