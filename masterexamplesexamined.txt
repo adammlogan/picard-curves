@@ -585,7 +585,14 @@ This is consistent for 13 if we run at higher precision, for N=40 we get 5829235
 
 Now we just need to confirm that this is 1/N of rational point. What if it isn't? No relations up to 30. but also no interesting endos other than the usual picard one which doesn't seem to be causing this.
 
-NEXT STEP: need to determine if 1/N or endo or what this is. Is not torsion apparently given the classification in compare but would be nice to compute coleman integrals to higher precision just to be sure.
+NEXT STEP: need to determine if 1/N or endo or what this is. Is not
+torsion apparently given the classification in compare but would be
+nice to compute coleman integrals to higher precision just to be sure.
+
+Travis: Let alpha be a root of x^3-3x^2-8. Then R = (alpha,
+alpha^2-2*alpha,1) is a point on C. We have that the divisor 3*R + 
+(1,-1,1) - 4*(0,1,0) is a principal divisor on C. Thus ``R is 1/3 of
+(1,-1,1)'' and ''R is a non-torsion point''. 
 
 Higher precision at p=5:
 
