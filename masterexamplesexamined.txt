@@ -587,7 +587,27 @@ Now we just need to confirm that this is 1/N of rational point. What if it isn't
 
 NEXT STEP: need to determine if 1/N or endo or what this is. Is not torsion apparently given the classification in compare but would be nice to compute coleman integrals to higher precision just to be sure.
 
+Higher precision at p=5:
 
+rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 33268321096706 + O(5^20),
+        b := [ 1 + O(5^30), 79370202091399 + O(5^21), -64783745144674 + O(5^21) 
+            ],
+        inf := false>,
+
+Higher precision at p=7:
+rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -6963323860053797665 + O(7^23),
+        b := [ 1 + O(7^30), 9458953134065515333 + O(7^23), -5436790786310628639 
+            + O(7^23) ],
+        inf := false>,
+
+Higher precision at p=13:
+rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 2970159158645156928 + O(13^17),
+        b := [ 1 + O(13^30), 1538292854855781293 + O(13^17), 
+            -3361779236218001167 + O(13^17) ],
+        inf := false>,
 
 PRECISION ISSUES (all resolved)
 
