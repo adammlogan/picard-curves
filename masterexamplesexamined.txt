@@ -1,0 +1,787 @@
+This is a master examples file that combines all previous examples files.
+
+TORSION POINTS
+
+[* [* 33264270000,
+x^4 + 7*x^3 + 3*x^2 - x
+*],
+x^3 + 6*x^2 + 3*x - 1,
+[*
+[ 32621769522350905372423336, 17, 21 ],
+[ 7275143658936017606515531, 17, 21 ],
+[ 29195020731721809901888343, 17, 21 ],
+[ 1, 17, 7 ]
+*]
+*]
+
+Need to do this one by hand because it failed to sort. Turns out (1,10^(1/3)) is a 9-torsion point.
+
+[* [* 47258883,
+x^4 - 3*x^2 + x + 1
+*],
+x,
+[
+[ 0, 1, 0 ],
+[ 0, 1, 1 ],
+[ 1, 0, 1 ]
+],
+true, [* [* 5,
+[],
+[
+[ 2, 5, 11 ]
+]
+
+It turns out that 3(2:7^(1/3):1) - (0:1:0) - 2(1:0:1) is principal, so
+3(2:7^(1/3):1) - 3(0:1:0) is equivalent to 2(1:0:1) - 2(0:1:0), which is
+3-torsion.  Which means we have a 9-torsion point that explains the extra
+solution.
+
+[*
+[
+3449091456,
+x^4 + 9*x^3 - 30*x^2 + 28*x - 8,
+x
+],
+[
+[ 0, 1, 0 ],
+[ 0, -2, 1 ],
+[ 1, 0, 1 ]
+],
+true, [* [* 5,
+[
+[ 42355682500758, 5, 20 ]
+],
+[
+[ 2, 5, 11 ]
+],
+[],
+[]
+*], [* 7,
+[],
+[],
+[],
+[]
+*], [* 11,
+[],
+[
+[ 2, 11, 20 ]
+],
+[],
+[]
+*], [* 13,
+[],
+[],
+[],
+[
+[ 13, 45, 100 ]
+]
+*] *]
+*]
+
+Then (2:16^(1/3):1)-(0:1:0) is a 9-torsion point on the Jacobian.
+
+[*
+[
+39020838912,
+x^4 + 8*x^3 - 24*x^2 + 16*x,
+x - 1
+],
+[
+[ 1, 1, 1 ],
+[ 0, 1, 0 ],
+[ 0, 0, 1 ]
+],
+true, [* [* 5,
+[],
+[
+[ 2, 5, 12 ]
+],
+[],
+[]
+*], [* 7,
+[
+[ 34719183451649743, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11 *], [* 13,
+[],
+[],
+[],
+[
+[ 13, 45, 100 ]
+]
+*] *]
+*]
+
+(2:16^(1/3):1) - (0:1:0) is a 4-torsion point.
+
+[*
+[
+341190475776,
+x^4 + 4*x^3 + 12*x^2 + 8*x,
+x + 1
+],
+[
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ -1, 1, 1 ]
+],
+true, [* [* 5,
+[
+[ 40925054490951, 5, 20 ]
+],
+[
+[ -2, 5, 12 ]
+],
+[],
+[]
+*], [* 7,
+[
+[ 27931130971477323, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[
+[ 459643461671308261, 11, 18 ]
+],
+[
+[ -2, 11, 6 ]
+],
+[],
+[]
+*], [* 13,
+[],
+[],
+[],
+[]
+*] *]
+*]
+
+(-2:16^(1/3):1)-(0:1:0) is a 9-torsion point.
+
+[*
+[
+465670176768,
+x^4 + 12*x^3 - 18*x^2 + 8*x - 1,
+x
+],
+[
+[ 0, 1, 0 ],
+[ 0, -1, 1 ]
+],
+true, [* [* 5,
+[
+[ 1206110487587, 5, 20 ]
+],
+[
+[ 1, 5, 15 ]
+],
+[],
+[]
+*], [* 7,
+[
+[ -16143149839158262, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[
+[ 192046846046401722656629174931711080, 11, 35 ]
+],
+[
+[ 1, 11, 33 ]
+],
+[],
+[]
+*], [* 13,
+[],
+[],
+[],
+[
+[ 13, 45, 100 ]
+]
+*] *]
+*]
+
+The point (1:2^(1/3):1) - (0:1:0) is a 4-torsion point on the curve. (Why four?)
+
+
+[*
+[
+829366824600,
+x^4 + 17*x^3 + 36*x^2 + 28*x + 8,
+x
+],
+[
+[ 0, 1, 0 ],
+[ -1, 0, 1 ],
+[ 0, 2, 1 ]
+],
+true, [* [* 5 *], [* 7,
+[],
+[],
+[],
+[]
+*], [* 11,
+[],
+[],
+[],
+[]
+*], [* 13,
+[
+[ -198656, 13, 6 ]
+],
+[
+[ 27, 13, 2 ]
+],
+[],
+[]
+*] *]
+*]
+
+Sage gives (1, (90)^(1/3):1) but Magma does not think this is a torsion point -- maybe a precision error? The Coleman integrals on basis are O(1). (sachi later note: what does that mean? when did i compute those?)
+
+> f:=x^4 + 17*x^3 + 36*x^2 + 28*x + 8;
+> data:=coleman_data(y^3-f,p,N);                  
+> L,v:=effective_chabauty(data:bound:=1000,e:=50);
+> L;
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^18),
+        b := [ 1 + O(13^40), O(13^12), O(13^6) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^7),
+        b := [ 1 + O(13^40), 2 + O(13^7), 4 + O(13^7) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -1 + O(13^21),
+        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -12696623025179167878937 + O(13^21),
+        b := [ 1 + O(13^40), O(13^7), O(13^14) ],
+        inf := false>
+]
+> 
+
+Sage now thinks it's a root of x^3 + 16*x^2 + 20*x + 8 so that it is (a,0). 13 is the first prime to split in this so that at least makes sense.
+
+This is a 3 torsion point.
+
+1/N of RATIONAL POINT
+
+[*
+[
+4920750000,
+x^4 + x^3 - 3*x^2 - 2*x,
+x+1
+],
+[
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ 2, 2, 1 ],
+[ -2, 0, 1 ],
+[ -1, -1, 1 ]
+],
+false, [* [* 5 *], [* 7,
+[],
+[],
+[
+[ -105237648, 7, 10 ]
+],
+[]
+*], [* 11,
+[
+[ -1510346449978989102, 11, 18 ],
+[ 1510346449978989103, 11, 18 ]
+],
+[],
+[
+[ -800588, 11, 6 ]
+],
+[]
+*], [* 13,
+[],
+[],
+[
+[ 864, 13, 3 ]
+],
+[]
+*] *]
+*]
+
+In this case, we can see that the x-coordinates of the p-adic points
+seem to come from a global point, alpha, which is a root of x^3 +
+3*x^2 +1 = f. Then (alpha, alpha^2+2alpha) is a point on the picard
+curve y^3 = x^4 + x^3 - 3*x^2 - 2*x over the field Q(alpha). In other
+words (alpha^2 + 2 alpha)^3 is congruent to x^4 + x^3 - 3*x^2 - 2*x
+mod f. Note though that Q(alpha) has a prime of degree 1 above 7, 11,
+13 but not 17 -- if you try at 17, then there are no extra points! For
+some reason this is being flagged as a torsion point (low precision?)
+but it's not. It's actually a third? of a rational point.
+
+We find the following relation in Jac(C):
+(-1:-1:1) - (0:1:0) = 3*(a:a^2+2*a:1)-3*(0:1:0). (This shows it's a third of the MW-generator)
+
+[*
+[
+4920750000,
+x^4 + x^3 + x - 1,
+x
+],
+[
+[ 0, 1, 0 ],
+[ 0, -1, 1 ]
+],
+false, [* [* 5 *], [* 7,
+[],
+[],
+[
+[ 10692751195095, 7, 16 ]
+],
+[]
+*], [* 11,
+[
+[ -445970024737383286000280995968663747, 11, 35 ],
+[ 445970024737383286000280995968663746, 11, 35 ]
+],
+[],
+[
+[ -4299052526837826679857492154894039, 11, 33 ]
+],
+[]
+*], [* 13,
+[],
+[],
+[],
+[
+[ 13, 45, 100 ]
+]
+*] *]
+*]
+
+These extra unexplained points are roots of x^3+3*x+1. Again, we do
+the same analysis (alpha, -alpha^2-1) is a point on the curve which is
+defined over the number field Q(alpha). Oddly, these are the same
+field ... I guess the curves have the same discriminant? What is a
+good reason for this? (Or are there not so many fields with primes of
+deg 1 over 5,7,11...) Again, this point is not torsion. We had
+computed that it's a third? of a rational point.
+
+We find that
+3*(a:-a^2-1:1) - 3*(0:1:0) = -(0:-1:1)+(0:1:0) 
+This shows it's a third of the MW generator)
+
+[*
+[
+34828517376,
+x^4 + 14*x^3 + 72*x^2 + 144*x,
+x + 4
+],
+[
+[ -4, -4, 1 ],
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ -6, 0, 1 ]
+],
+true, [* [* 5,
+[],
+[],
+[
+[ -6813867, 5, 11 ]
+],
+[]
+*], [* 7,
+[],
+[],
+[],
+[]
+*], [* 11,
+[
+[ -54717391699396405944505865390918025, 11, 35 ],
+[ 54717391699396405944505865390918017, 11, 35 ]
+],
+[],
+[
+[ -14837190111754503886, 11, 20 ]
+],
+[]
+*], [* 13,
+[],
+[],
+[],
+[]
+*] *]
+*]
+X-Coordinte to be a root of x^3 + 12*x^2 + 72*x + 144, let K be its
+splitting field. Then this is
+(t, -1/2*t^2 - 4*t - 12). Set Q = [t,-1/2*t^2-4*t-12,1]. Set
+P=[-4,-4,1] (the nontorsion point on C). We find using reln_search
+that 3*Q+P-4*infty is zero in Jac(C). Thus Q-infty is nontorsion in Jac(C_K) and Q-infty
+is 1/3 of -(P-infty). (Note that P or -P is the MW generator, so this is 1/3 of that generator.)
+
+
+[*
+[
+1289945088,
+x^4 + 6*x^3 - 48*x - 64,
+x + 3
+],
+[
+[ -3, -1, 1 ],
+[ 0, 1, 0 ],
+[ -4, 0, 1 ],
+[ 0, -4, 1 ],
+[ -2, 0, 1 ]
+],
+true, [* [* 5,
+[],
+[],
+[
+[ -77636401, 5, 12 ]
+],
+[]
+*], [* 7,
+[
+[ -9219531158736606, 7, 20 ],
+[ 9219531158736606, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[],
+[],
+[
+[ -293390, 11, 6 ]
+],
+[]
+*], [* 13,
+[],
+[],
+[
+[ -8529866190414815446546, 13, 22 ]
+],
+[]
+*] *]
+*]
+
+Maybe x-coordinate is a root of x^3 + 9*x^2 + 24*x + 24. Seems to work mod 13. Not sure about what 5 or 11 is doing so maybe not. Increase precision? But not a cube so not right.
+
+For 5 it says x^3 - 24*x - 48 from higher precision:
+
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 468916504224 + O(5^19),
+        b := [ 1 + O(5^30), -8238833750791 + O(5^19), -8254850624319 + O(5^19) 
+        ],
+        inf := false>,
+
+For 11:
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 79131793358 + O(11^11),
+        b := [ 1 + O(11^30), -138631191382 + O(11^11), 109745084189 + O(11^11) 
+        ],
+        inf := false>,
+
+also gives x^3 - 24*x - 48
+
+For 5 and 11, we have the point (t,1/2*t^2 - 4) where t is a root of x^3 - 24*x - 48. This number field K(t)/(t^3 - 24*t - 48) has a prime of degree 1 above 5 and 11 but not 13, but yes over 17.
+
+Then at 13, we get the point (s,s^2 + 6*s + 8) where t is a root of x^3 + 9*x^2 + 24*x + 24. This number field Q(t)/(s^3 + 9*s^2 + 24*s + 24) has a prime of degree one over 13, 17, 19, etc.
+
+Using reln_search we get that  3 (a : 1/2*(a^2 - 8) : 1) - 3(0:1:0)= -(0:-4:1) + (0:1:0) and also -(-3 : -1 : 1)-(0:1:0)=3*(a : a^2 + 6*a + 8 : 1)-3(0:1:0).
+
+Using division test we get
+> F:=x^4 + 6*x^3 - 48*x - 64;
+> L<a>:=NumberField(x^3 - 24*x - 48);
+> R:=[a,1/2*a^2-4,1];
+> MWgen:=[-3,-1,1];
+
+> division_test(F,R,MWgen,L,20);
+[ -18, 3 ]
+Place at (a : 1/2*(a^2 - 8) : 1)
+Place at (-3 : -1 : 1)
+
+(shouldn't this have given me [-6,1]?) no, there is probably a 3-torsion point
+
+and that
+
+> K<b>:=NumberField(x^3 + 9*x^2 + 24*x + 24);
+> S:=[b,b^2+6*b+8,1];
+> division_test(F,S,MWgen,K,20);
+[ 3, 1 ]
+Place at (b : b^2 + 6*b + 8 : 1)
+Place at (-3 : -1 : 1)
+> 
+
+therefore that 18((a : 1/2*(a^2 - 8) : 1) - (0:1:0))=9((b : b^2 + 6*b + 8 : 1) - (0:1:0)) in J(Q) so that (b : b^2 + 6*b + 8 : 1) - (0:1:0) is half of the other point plus possibly a 9-torsion point, and also that 6((a : 1/2*(a^2 - 8) : 1) - (0:1:0)) = (-3 : -1 : 1)-(0:1:0) + three torsion.
+
+At 17 we get four extra points, the two we expect and the Weierstrass points from 7:
+
+x := 3927705130906318304776768260172977625637045117265524109138 + O(17^48) is a root of x^3 + 9*x^2 + 24*x + 24 and we get that (s,s^2 + 6*s + 8) is a point on the curve. This is the same as the point at 13.
+
+x := 13794699588760165230433715908425239024055848176853380310376 + O(17^48) is a root of x^3 - 24*x - 48 and we get that (t,1/2*t^2 - 4) is a point on the curve. This is the same as the point at 5 and 11.
+
+x := 103871804253268272677148537828849240576404128063697744196442297312689620136215081152215040418792283 is just sqrt(8) = 2 sqrt(2), and then we get (2 sqrt 2, 0) is a point. This is one of the Weierstrass points from 7.
+
+x := -103871804253268272677148537828849240576404128063697744196442297312689620136215081152215040418792283 + O(17^80) is just - sqrt(8) and then we get (-2 sqrt 2, 0) is a point, arbitrarily picking the other sign. This is the other Weierstrass point from 7.
+
+UNKNOWN
+
+[*
+[
+940369969152,
+x^4 + 6*x^3 - 24*x^2 + 16*x,
+x - 1
+],
+[
+[ 2, 0, 1 ],
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ 1, -1, 1 ]
+],
+true, [* [* 5,
+[
+[ 19009693990214, 5, 20 ],
+[ -19009693990222, 5, 20 ]
+],
+[],
+[
+[ 784206, 5, 10 ]
+],
+[]
+*], [* 7,
+[],
+[],
+[
+[ 70984282, 7, 10 ]
+],
+[]
+*], [* 11,
+[],
+[],
+[],
+[]
+*], [* 13,
+[],
+[],
+[
+[ -642, 13, 3 ]
+],
+[]
+*] *]
+*]
+
+The x-coordinate is a root of x^3 - 3*x^2 - 8. Why can't this be the number field with Q(x)/(x^3 - 3*x^2 - 8) so that we have (x, x^2-2x).
+
+
+This is consistent for 13 if we run at higher precision, for N=40 we get 58292359 at prec O(13^8)
+
+Now we just need to confirm that this is 1/N of rational point. What if it isn't? No relations up to 30. but also no interesting endos other than the usual picard one which doesn't seem to be causing this.
+
+NEXT STEP: need to determine if 1/N or endo or what this is. Is not torsion apparently given the classification in compare but would be nice to compute coleman integrals to higher precision just to be sure.
+
+
+
+PRECISION ISSUES (all resolved)
+
+[*
+[
+164280636243,
+x^4 + 4*x^3 + x^2 - 3*x,
+x + 1
+],
+[
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ -1, 1, 1 ]
+],
+true, [* [* 5,
+[],
+[],
+[],
+[]
+*], [* 7,
+[
+[ 23033600769867642, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[
+[ 949331610083827240, 11, 18 ]
+],
+[],
+[],
+[]
+*], [* 13,
+[],
+[],
+[
+[ 454, 13, 3 ]
+],
+[]
+*] *]
+*]
+
+Redid the point and it appears to be (-1, 1). Will try to make sure it's a precision error later. Redit at 13 and got:
+
+> f:=x^4 + 4*x^3 + x^2 - 3*x;
+> p:=13;
+> N:=40;
+> data:=coleman_data(y^3-f,p,N);
+> L,v:=effective_chabauty(data:bound:=1000,e:=50);
+> L;
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^24),
+        b := [ 1 + O(13^40), O(13^16), O(13^8) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^24),
+        b := [ 1 + O(13^40), O(13^8), O(13^16) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -1 + O(13^8),
+        b := [ 1 + O(13^40), 1 + O(13^8), 1 + O(13^8) ],
+        inf := false>
+]
+> 
+
+So this is resolved, no extra point.
+
+
+[*
+[
+596277116928,
+x^4 + 8*x^3 + 16*x^2 - 16*x,
+x + 4
+],
+[
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ -4, 4, 1 ]
+],
+true, [* [* 5,
+[
+[ -47365887061451, 5, 20 ]
+],
+[],
+[],
+[]
+*], [* 7,
+[
+[ -10566332006281098, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[],
+[],
+[],
+[]
+*], [* 13,
+[],
+[],
+[
+[ -947, 13, 3 ]
+],
+[]
+*] *]
+*]
+
+The 13-adic point appears to be (-3/5, sqrt(3*47*61)/25) but it doesn't appear that the square root is defined over the 13-adics... concerning?
+
+Update: Travis got this to work by hand, and it disappears. Output:
+
+ with precision 30, e = 90, there were no extra points at all. So maybe it was a precision issue? This is resolved anyway.
+
+
+[
+    rec<recformat<x, b, inf, xt, bt, index> |
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^30), O(13^16) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> |
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^16), O(13^30) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> |
+        x := -4 + O(13^16),
+        b := [ 1 + O(13^30), 4 + O(13^16), 16 + O(13^16) ],
+        inf := false>
+]
+
+[*
+[
+113232992256,
+x^4 + x^3 - 4*x^2 - 8*x,
+x - 2
+],
+[
+[ -2, 2, 1 ],
+[ 0, 1, 0 ],
+[ 0, 0, 1 ],
+[ 2, -2, 1 ]
+],
+true, [* [* 5,
+[
+[ 33015057818111, 5, 20 ]
+],
+[],
+[],
+[]
+*], [* 7,
+[
+[ 9498858915388168, 7, 20 ]
+],
+[],
+[],
+[]
+*], [* 11,
+[
+[ 1136567117068787500692829447236705128, 11, 35 ]
+],
+[],
+[],
+[]
+*], [* 13,
+[],
+[],
+[
+[ -2, 13, 22 ]
+],
+[]
+*] *]
+*]
+
+Reran at 13, got:
+
+[
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^30), O(13^17) ],
+        inf := true>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := O(13^30),
+        b := [ 1 + O(13^30), O(13^17), O(13^30) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := 2 + O(13^17),
+        b := [ 1 + O(13^30), -2 + O(13^17), 4 + O(13^17) ],
+        inf := false>,
+    rec<recformat<x, b, inf, xt, bt, index> | 
+        x := -2 + O(13^17),
+        b := [ 1 + O(13^30), 2 + O(13^17), 4 + O(13^17) ],
+        inf := false>
+]
+
+so I think something weird happened with compare, maybe precision error. This is resolved anyway.

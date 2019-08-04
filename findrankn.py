@@ -1,4 +1,4 @@
-#takes in a file of curves on which magma has run RankBounds and finds the rank one curves, prints to a file
+#takes in a file of curves on which magma has run RankBounds and finds the rank n curves, prints to a file
 #you should manually remove the last comma by hand before running through magma
 
 def findRankOne(fin,fout):
@@ -8,7 +8,7 @@ def findRankOne(fin,fout):
 	for c in curves:
 		c=c.strip()
 		try:
-			if int(c[-1:])==1 and int(c[-3:-2]) ==1:
+			if int(c[-1:])==2 and int(c[-3:-2]) ==2:
 				c=c.replace(':',',')
 				c=c.replace('[','')
 				c=c.replace(']','')
@@ -16,4 +16,4 @@ def findRankOne(fin,fout):
 		except:
 			continue
 	out.write(']')
-findRankOne("master_rankboundsdata.txt","masterrank1nonmonic.txt")
+findRankOne("runtime_errorsoutput.txt","rank2fromrte.txt")
